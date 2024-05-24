@@ -2,5 +2,4 @@
 
 ## TODO
 
-- hello world
-- test
+- finish these, as akhil is not relevant
