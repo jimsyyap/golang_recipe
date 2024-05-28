@@ -2,4 +2,5 @@
 
 ## TODO
 
-- finish these, as akhil is not relevant
+- blackhat go, native go, sparc flow ghost in the cloud
+- seek security analyst + golang

@@ -1,12 +1,13 @@
 package main
 
 import (
-	"io"
+	"bufio"
 	"log"
 	"net"
 )
 
 // echo is a handler function that simply echoes received data.
+/*
 func echo(conn net.Conn) {
 	defer conn.Close()
 
@@ -32,6 +33,29 @@ func echo(conn net.Conn) {
 		if _, err := conn.Write(b[0:size]); err != nil {
 			log.Fatalln("Unable to write data")
 		}
+	}
+}
+*/
+
+// using bufio package that wraps reader and writer to create a buffered IO mechanism
+func echo(conn net.Conn) {
+	defer conn.Close()
+
+	reader := bufio.NewReader(conn)
+	s, err := reader.ReadString('\n')
+
+	if err != nil {
+		log.Fatalln("Unable to read data")
+	}
+
+	log.Printf("Received %d bytes: %s", len(s), s)
+	log.Println("writing data")
+	writer := bufio.NewWriter(conn)
+	if _, err := writer.WriteString(s); err != nil {
+		log.Fatalln("Unable to write data")
+	}
+	if err := writer.Flush(); err != nil {
+		log.Fatalln("Unable to flush data")
 	}
 }
 
