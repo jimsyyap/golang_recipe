@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/blackhat-go/bhg/ch-3/metasploit-minimal/rpc"
+	"github.com/jimsyyap/sploit01/rpc"
 )
 
 func main() {
