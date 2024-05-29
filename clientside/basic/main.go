@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	resp, err := http.Get("https://www.google.com/robots.txt")
 	if err != nil {
 		log.Panicln(err)
@@ -59,7 +58,6 @@ func main() {
 	fmt.Println(resp.Status)
 
 	req, err = http.NewRequest("PUT", "https://www.google.com/robots.txt", strings.NewReader(form.Encode()))
-
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -69,7 +67,6 @@ func main() {
 	}
 	resp.Body.Close()
 	fmt.Println(resp.Status)
-
 }
 
 /*
