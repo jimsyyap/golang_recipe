@@ -33,7 +33,7 @@ func writeError(writer http.ResponseWriter, status int, err error) {
 }
 
 func (h *handler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
-	conn, err := net.DialUnix(unix, nil, &net.UnixAddr{h.socket, unix})
+	conn, err := net.DialUnix(unix, nil, &net.UnixAddr{Name: h.socket, Net: unix})
 	if err != nil {
 		writeError(response, errCode, err)
 		return
@@ -72,9 +72,9 @@ func (h *handler) ServeHTTP(response http.ResponseWriter, request *http.Request)
 	for {
 		line, _, err := reader.ReadLine()
 
-		//must check for io.EOF as this does not mean
-		//problem it only means that Docker has stop
-		//sending data. Return only.
+		// must check for io.EOF as this does not mean
+		// problem it only means that Docker has stop
+		// sending data. Return only.
 		if err == io.EOF {
 			return
 		} else if err != nil {
@@ -120,4 +120,4 @@ func main() {
 * this code acts as a middleman for communicating with docker
 * it listens for commands, passes them on to docker, and then returns the results
 * this can be useful for reasons like monitoring or filtering docker commands, or controlling access to the docker api
-*/
+ */
