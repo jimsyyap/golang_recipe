@@ -69,8 +69,9 @@ In essence, this program is designed to greet a user multiple times based on the
 
 * using non-zero exit codes, that if a program sees a non-zero exit code, it might send an email to alert someone of the problem.
 
-Running test
-    [greeter] go test -v                                    main  ✭
+Running test (passing v flag when running go test will display the test functions and the result)
+    [greeter] go test -v
+    main  ✭
     === RUN   TestParseArgs
     --- PASS: TestParseArgs (0.00s)
     === RUN   TestRunCmd
