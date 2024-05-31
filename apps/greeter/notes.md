@@ -68,3 +68,16 @@ This program is a greeter application. It asks for your name and then prints a g
 In essence, this program is designed to greet a user multiple times based on the input provided via command-line arguments, with a built-in help feature to guide users on how to use the program correctly.
 
 * using non-zero exit codes, that if a program sees a non-zero exit code, it might send an email to alert someone of the problem.
+
+Running test
+    [greeter] go test -v                                    main  ✭
+    === RUN   TestParseArgs
+    --- PASS: TestParseArgs (0.00s)
+    === RUN   TestRunCmd
+        run_cmd_test.go:42: Expected error enter name pls, got You didn't enter your name
+    --- FAIL: TestRunCmd (0.00s)
+    === RUN   TestValidateArgs
+    --- PASS: TestValidateArgs (0.00s)
+    FAIL
+    exit status 1
+    FAIL	github.com/jimsyyap/greeter01	0.002s
