@@ -54,3 +54,9 @@ Preparing for a technical interview as a Go (Golang) developer involves understa
 
 ### Summary
 By covering these areas, you'll be well-prepared to demonstrate your proficiency as a Go developer and handle various types of questions and tasks in a technical interview. Remember to balance studying theoretical concepts with hands-on coding practice to reinforce your understanding.
+
+### notes
+rand.Seed deprecated? Do...
+Souorce := rand.Newsource(time.Now().UnixNano())
+r := rand.New(source)
+number := r.Intn(10)
