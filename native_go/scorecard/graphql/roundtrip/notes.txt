@@ -1,0 +1,81 @@
+Overview
+
+This Go code defines a custom HTTP transport that adds a GitHub personal access token (PAT) to the authorization header of every HTTP request. This is useful for making authenticated requests to GitHub's API.
+
+Key Components
+
+1. Imports: The code imports several packages:
+   - `context`: For managing context in HTTP requests.
+   - `fmt`: For formatting strings.
+   - `net/http`: For making HTTP requests.
+
+2. NewTransport Function:
+   - `NewTransport(t string) http.RoundTripper`: This function takes a token string as an argument and returns a custom `http.RoundTripper`. A `RoundTripper` is an interface representing the ability to execute a single HTTP transaction, obtaining the Response for a given Request.
+   - It initializes a `githubTransport` struct with the default HTTP transport and the provided token.
+
+3. githubTransport Struct:
+   - `githubTransport` struct contains two fields:
+     - `innerTransport`: The actual HTTP transport used to make requests (defaults to `http.DefaultTransport`).
+     - `token`: The GitHub personal access token.
+
+4. RoundTrip Method:
+   - `func (gt *githubTransport) RoundTrip(r *http.Request) (*http.Response, error)`: This method is where the actual request modification happens.
+   - It takes an `http.Request` as an argument, modifies it to include the authorization header with the PAT, and then calls the inner transport's `RoundTrip` method to execute the request.
+   - It returns the HTTP response or an error if the request fails.
+
+Detailed Walkthrough
+
+1. NewTransport Function:
+   - This function creates and returns a new instance of `githubTransport`.
+   - `NewTransport` is called with a token, and it returns a `RoundTripper` that will include this token in the authorization header of every request.
+
+   ```go
+   func NewTransport(t string) http.RoundTripper {
+       return &githubTransport{
+           innerTransport: http.DefaultTransport,
+           token:          t,
+       }
+   }
+   ```
+
+2. githubTransport Struct:
+   - This struct holds the inner transport and the token.
+
+   ```go
+   type githubTransport struct {
+       innerTransport http.RoundTripper
+       token          string
+   }
+   ```
+
+3. RoundTrip Method:
+   - This method is called for each HTTP request made using the custom transport.
+   - It sets the authorization header with the PAT, making the request authenticated.
+   - The method then calls the inner transport's `RoundTrip` to perform the actual network request and returns the response.
+
+   ```go
+   func (gt *githubTransport) RoundTrip(r *http.Request) (*http.Response, error) {
+       *r = *r.WithContext(context.Background()) // Ensures the request has a context
+
+       // Add the authorization header with the token
+       r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", gt.token))
+
+       // Perform the actual HTTP request
+       resp, err := gt.innerTransport.RoundTrip(r)
+       if err != nil {
+           return nil, fmt.Errorf("error in HTTP: %w", err)
+       }
+
+       return resp, nil
+   }
+   ```
+
+Summary
+
+- Purpose: The code sets up a custom HTTP transport that adds a GitHub personal access token to the authorization header of every request. This is crucial for making authenticated requests to GitHub's API.
+- Components:
+  - **NewTransport Function**: Initializes the custom transport with the provided token.
+  - **githubTransport Struct**: Holds the inner HTTP transport and the token.
+  - **RoundTrip Method**: Modifies each HTTP request to include the token in the authorization header and then performs the request.
+
+This code ensures that any HTTP request made using this custom transport will be authenticated with the provided GitHub token, allowing access to GitHub API endpoints that require authentication.
