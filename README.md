@@ -57,6 +57,6 @@ By covering these areas, you'll be well-prepared to demonstrate your proficiency
 
 ### notes
 rand.Seed deprecated? Do...
-Souorce := rand.Newsource(time.Now().UnixNano())
+Source := rand.NewSource(time.Now().UnixNano())
 r := rand.New(source)
 number := r.Intn(10)
