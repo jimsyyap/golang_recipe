@@ -1,0 +1,41 @@
+How It Works
+Command-Line Arguments:
+
+The program expects two arguments: a domain and a file extension (e.g., example.com pdf).
+Building the Search Query:
+
+Constructs a Bing search query to find files of the specified type within the specified domain.
+Example query: site:example.com && filetype:pdf && instreamset:(url title):pdf.
+Making the HTTP Request:
+
+Sends an HTTP GET request to Bing with the constructed query.
+Parsing the Search Results:
+
+Parses the HTML response from Bing using goquery to find search results.
+Downloading and Processing Each File:
+
+For each search result, the handler function is called.
+The handler downloads the file, reads it as a zip archive, and extracts metadata using the metadata package.
+Extracting Metadata:
+
+Extracts metadata like creator, last modified by, application, and major version from the downloaded file and logs this information.
+Detailed Steps
+Command-Line Check:
+
+The program checks if the required arguments (domain and file type) are provided. If not, it logs an error and exits.
+Search Query Construction:
+
+Constructs a Bing search query to find files of the specified type within the given domain.
+Encodes the query into a URL format.
+Sending Search Request:
+
+Sends the search request to Bing.
+Parses the response to find relevant search results.
+Processing Each Result:
+
+For each search result, retrieves the URL of the file.
+Downloads the file.
+Reads the downloaded file into a byte buffer.
+Opens the file as a zip archive.
+Extracts metadata from the zip file.
+Logs the extracted metadata.
