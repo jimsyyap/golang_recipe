@@ -8,22 +8,25 @@ import (
 
 func TestHandleCommand(t *testing.T) {
 	usageMessage := `Usage: mync [http|grpc] -h
-    http: A HTTP client.
 
-    http: <options> server
+http: A HTTP client.
 
-    Options:
-        -verb string
-            HTTP method (default "GET")
-    grpc: A gRPC client.
-    Grpc: <options> server
+http: <options> server
 
-    Options:
-        -body string
-            Body of request
-        -method string
-            Method of request
-    `
+Options: 
+  -verb string
+    	HTTP method (default "GET")
+
+grpc: A gRPC client.
+
+grpc: <options> server
+
+Options: 
+  -body string
+    	Body of request
+  -method string
+    	Method to call
+`
 	testConfigs := []struct {
 		args   []string
 		output string
@@ -32,7 +35,7 @@ func TestHandleCommand(t *testing.T) {
 		{
 			args:   []string{},
 			err:    errInvalidSubCommand,
-			output: "invalid sub-command specified\n" + usageMessage,
+			output: "Invalid sub-command specified\n" + usageMessage,
 		},
 		{
 			args:   []string{"-h"},
@@ -42,7 +45,7 @@ func TestHandleCommand(t *testing.T) {
 		{
 			args:   []string{"foo"},
 			err:    errInvalidSubCommand,
-			output: "invalid sub-command specified\n" + usageMessage,
+			output: "Invalid sub-command specified\n" + usageMessage,
 		},
 	}
 
@@ -53,14 +56,14 @@ func TestHandleCommand(t *testing.T) {
 			t.Fatalf("Expected nil error, got %v", err)
 		}
 
-		if tc.err != nil && err == nil {
-			t.Fatalf("Expected error %v, got nil", tc.err)
+		if tc.err != nil && err.Error() != tc.err.Error() {
+			t.Fatalf("Expected error %v, got %v", tc.err, err)
 		}
 
 		if len(tc.output) != 0 {
 			gotOutput := byteBuf.String()
-			if gotOutput != tc.output {
-				t.Fatalf("Expected output %q, got %q", tc.output, gotOutput)
+			if tc.output != gotOutput {
+				t.Errorf("Expected output to be: %#v, Got: %#v", tc.output, gotOutput)
 			}
 		}
 		byteBuf.Reset()

@@ -1,0 +1,491 @@
+grpcCmd.go ---
+
+This Go code defines a command-line handler for a gRPC client using the `flag` package to parse command-line arguments. Here's a break-down of the components and their functions.
+
+Overview
+
+The code is designed to handle command-line arguments for a gRPC client. It parses the arguments, validates them, and then prints a message indicating that the gRPC command is being executed.
+
+Key Components
+
+1. Imports:
+   - `flag`: For parsing command-line arguments.
+   - `fmt`: For formatted I/O.
+   - `io`: For working with input and output streams.
+
+2. grpcConfig Struct:
+   - A structure to hold the configuration for the gRPC command.
+   
+   ```go
+   type grpcConfig struct {
+       server string
+       method string
+       body   string
+   }
+   ```
+
+3. HandleGrpc Function:
+   - This function handles the parsing and processing of command-line arguments for the gRPC command.
+   
+   ```go
+   func HandleGrpc(w io.Writer, args []string) error {
+       c := grpcConfig{}
+       fs := flag.NewFlagSet("grpc", flag.ContinueOnError)
+       fs.SetOutput(w)
+       fs.StringVar(&c.method, "method", "", "method to call")
+       fs.StringVar(&c.body, "body", "", "body of request")
+       fs.Usage = func() {
+           var usageString = `Usage: mync grpc -h
+           grpc: A gRPC client.
+           Grpc: <options> server`
+           fmt.Fprintf(w, usageString)
+           fmt.Fprintln(w)
+           fmt.Fprintln(w)
+           fmt.Fprintln(w, "Options: ")
+           fs.PrintDefaults()
+       }
+       err := fs.Parse(args)
+       if err != nil {
+           return err
+       }
+       if fs.NArg() != 1 {
+           return fmt.Errorf("no server specified")
+       }
+       c.server = fs.Arg(0)
+       fmt.Fprintln(w, "executing grpc command")
+       return nil
+   }
+   ```
+
+Detailed Walkthrough
+
+1. grpcConfig Struct:
+   - Defines the configuration options for the gRPC command: `server`, `method`, and `body`.
+
+2. HandleGrpc Function:
+   - The main function to handle the gRPC command-line arguments.
+   - It starts by creating an instance of `grpcConfig` to store the parsed arguments.
+   
+   ```go
+   c := grpcConfig{}
+   ```
+
+3. Flag Set:
+   - Creates a new flag set named "grpc" to handle the argument parsing.
+   
+   ```go
+   fs := flag.NewFlagSet("grpc", flag.ContinueOnError)
+   fs.SetOutput(w)
+   ```
+   
+   - Sets the output of the flag set to the writer `w`, so error messages and usage information are written to `w`.
+
+4. **Define Flags**:
+   - Defines the `method` and `body` flags and associates them with the `grpcConfig` instance.
+   
+   ```go
+   fs.StringVar(&c.method, "method", "", "method to call")
+   fs.StringVar(&c.body, "body", "", "body of request")
+   ```
+
+5. Usage Function:
+   - Defines a custom usage function to provide usage information for the gRPC command.
+   
+   ```go
+   fs.Usage = func() {
+       var usageString = `Usage: mync grpc -h
+       grpc: A gRPC client.
+       Grpc: <options> server`
+       fmt.Fprintf(w, usageString)
+       fmt.Fprintln(w)
+       fmt.Fprintln(w)
+       fmt.Fprintln(w, "Options: ")
+       fs.PrintDefaults()
+   }
+   ```
+
+6. Parse Arguments:
+   - Parses the command-line arguments using the flag set.
+   
+   ```go
+   err := fs.Parse(args)
+   if err != nil {
+       return err
+   }
+   ```
+   
+   - If parsing fails, it returns the error.
+
+7. Validate Arguments:
+   - Checks if exactly one non-flag argument (the server) is provided.
+   
+   ```go
+   if fs.NArg() != 1 {
+       return fmt.Errorf("no server specified")
+   }
+   c.server = fs.Arg(0)
+   ```
+
+8. Execute Command:
+   - Prints a message indicating the gRPC command is being executed.
+   
+   ```go
+   fmt.Fprintln(w, "executing grpc command")
+   ```
+
+Summary
+
+- Purpose: This code handles the command-line interface for a gRPC client, parsing and validating the command-line arguments.
+- Components:
+  - grpcConfig Struct: Holds the configuration options for the gRPC command.
+  - HandleGrpc Function: Parses command-line arguments, validates them, and prints a message indicating the command is being executed.
+- Usage: The function prints a usage message if the arguments are incorrect or the `-h` flag is passed, helping users understand how to use the gRPC command.
+
+handle_grpc_test.go ----
+
+This Go code defines unit tests for the `HandleGrpc` function, which handles command-line arguments for a gRPC client. The tests are designed to ensure that the function behaves correctly under different scenarios, such as no arguments provided, help flag requested, and valid gRPC command arguments. Here's an explanation of each part:
+
+Overview
+
+- Package: The code is part of the `cmd` package.
+- Imports:
+  - `bytes`: For buffering output in memory.
+  - `errors`: For creating and handling error values.
+  - `testing`: For writing unit tests.
+
+Test Case: `TestHandleGrpc`
+
+This function contains multiple test cases to validate the behavior of `HandleGrpc`.
+
+Constants and Variables
+
+- usageMessage: A string that represents the usage instructions for the gRPC client. This message is expected to be printed when the `-h` flag is passed.
+
+```go
+usageMessage := `
+grpc: A gRPC client.
+
+grpc: <options> server
+
+Options: 
+  -body string
+    	Body of request
+  -method string
+    	Method to call
+`
+```
+
+- testConfigs: A slice of test configurations, each containing:
+  - `args`: The command-line arguments to pass to `HandleGrpc`.
+  - `err`: The expected error.
+  - `output`: The expected output.
+
+```go
+testConfigs := []struct {
+	args   []string
+	err    error
+	output string
+}{
+	{
+		args: []string{},
+		err:  ErrNoServerSpecified,
+	},
+	{
+		args:   []string{"-h"},
+		err:    errors.New("flag: help requested"),
+		output: usageMessage,
+	},
+	{
+		args:   []string{"-method", "service.host.local/method", "-body", "{}", "http://localhost"},
+		err:    nil,
+		output: "Executing grpc command\n",
+	},
+}
+```
+
+Testing Loop
+
+- byteBuf: A buffer to capture the output of `HandleGrpc`.
+
+```go
+byteBuf := new(bytes.Buffer)
+```
+
+- Loop through each test configuration and execute `HandleGrpc` with the provided arguments.
+
+```go
+for _, tc := range testConfigs {
+	err := HandleGrpc(byteBuf, tc.args)
+	if tc.err == nil && err != nil {
+		t.Fatalf("Expected nil error, got %v", err)
+	}
+
+	if tc.err != nil && err.Error() != tc.err.Error() {
+		t.Fatalf("Expected error %v, got %v", tc.err, err)
+	}
+
+	if len(tc.output) != 0 {
+		gotOutput := byteBuf.String()
+		if tc.output != gotOutput {
+			t.Fatalf("Expected output to be: %#v, Got: %#v", tc.output, gotOutput)
+		}
+	}
+
+	byteBuf.Reset()
+}
+```
+
+Detailed Walkthrough
+
+1. Test Case 1:
+   - Args: `[]string{}`
+   - Expected Error: `ErrNoServerSpecified`
+   - Expected Output: None
+
+   This test case checks the behavior when no arguments are provided. The function is expected to return `ErrNoServerSpecified`.
+
+2. Test Case 2:
+   - Args: `[]string{"-h"}`
+   - Expected Error: `errors.New("flag: help requested")`
+   - Expected Output: `usageMessage`
+
+   This test case checks the behavior when the `-h` flag is passed. The function is expected to return a help message and the specific error `"flag: help requested"`.
+
+3. Test Case 3:
+   - Args: `[]string{"-method", "service.host.local/method", "-body", "{}", "http://localhost"}`
+   - Expected Error: `nil`
+   - Expected Output: `"Executing grpc command\n"`
+
+   This test case checks the behavior when valid gRPC command arguments are provided. The function is expected to execute without error and print `"Executing grpc command\n"`.
+
+Summary
+
+- Purpose: This code tests the `HandleGrpc` function, ensuring it correctly parses and handles command-line arguments for a gRPC client.
+- Components:
+  - `usageMessage`: Expected help message.
+  - `testConfigs`: Test configurations with arguments, expected errors, and expected outputs.
+  - Testing Loop: Executes `HandleGrpc` with each set of arguments and checks the result against expected values.
+  
+By running these tests, you can verify that `HandleGrpc` behaves as expected under different scenarios.
+
+handle_http_test.go ----
+
+This Go code defines unit tests for the `HandleHttp` function, which is designed to handle command-line arguments for an HTTP client. The tests ensure that the function behaves correctly under various scenarios, such as no arguments provided, help flag requested, and valid HTTP command arguments.
+
+Detailed Explanation
+
+1. Package and Imports:
+   - The code is part of the `cmd` package.
+   - It imports `bytes` for buffering output in memory, `errors` for error handling, and `testing` for writing unit tests.
+
+2. Test Case: `TestHandleHttp`:
+   This function contains multiple test cases to validate the behavior of `HandleHttp`.
+
+Constants and Variables
+
+- usageMessage: A string representing the usage instructions for the HTTP client. This message is expected to be printed when the `-h` flag is passed.
+
+```go
+usageMessage := `
+http: A HTTP client.
+
+http: <options> server
+
+Options: 
+  -verb string
+    	HTTP method (default "GET")
+`
+```
+
+- testConfigs: A slice of test configurations, each containing:
+  - `args`: The command-line arguments to pass to `HandleHttp`.
+  - `output`: The expected output.
+  - `err`: The expected error.
+
+```go
+testConfigs := []struct {
+	args   []string
+	output string
+	err    error
+}{
+	{
+		args: []string{},
+		err:  ErrNoServerSpecified,
+	},
+	{
+		args:   []string{"-h"},
+		err:    errors.New("flag: help requested"),
+		output: usageMessage,
+	},
+	{
+		args:   []string{"http://localhost"},
+		err:    nil,
+		output: "Executing http command\n",
+	},
+}
+```
+
+#### Testing Loop
+
+- **byteBuf**: A buffer to capture the output of `HandleHttp`.
+
+```go
+byteBuf := new(bytes.Buffer)
+```
+
+- Loop through each test configuration and execute `HandleHttp` with the provided arguments.
+
+```go
+for _, tc := range testConfigs {
+	err := HandleHttp(byteBuf, tc.args)
+	if tc.err == nil && err != nil {
+		t.Fatalf("Expected nil error, got %v", err)
+	}
+
+	if tc.err != nil && err.Error() != tc.err.Error() {
+		t.Fatalf("Expected error %v, got %v", tc.err, err)
+	}
+
+	if len(tc.output) != 0 {
+		gotOutput := byteBuf.String()
+		if tc.output != gotOutput {
+			t.Errorf("Expected output to be: %#v, Got: %#v", tc.output, gotOutput)
+		}
+	}
+	byteBuf.Reset()
+}
+```
+
+### Detailed Walkthrough
+
+1. **Test Case 1**:
+   - **Args**: `[]string{}`
+   - **Expected Error**: `ErrNoServerSpecified`
+   - **Expected Output**: None
+
+   This test case checks the behavior when no arguments are provided. The function is expected to return `ErrNoServerSpecified`.
+
+2. **Test Case 2**:
+   - **Args**: `[]string{"-h"}`
+   - **Expected Error**: `errors.New("flag: help requested")`
+   - **Expected Output**: `usageMessage`
+
+   This test case checks the behavior when the `-h` flag is passed. The function is expected to return a help message and the specific error `"flag: help requested"`.
+
+3. **Test Case 3**:
+   - **Args**: `[]string{"http://localhost"}`
+   - **Expected Error**: `nil`
+   - **Expected Output**: `"Executing http command\n"`
+
+   This test case checks the behavior when valid HTTP command arguments are provided. The function is expected to execute without error and print `"Executing http command\n"`.
+
+### Summary
+
+- **Purpose**: This code tests the `HandleHttp` function to ensure it correctly parses and handles command-line arguments for an HTTP client.
+- **Components**:
+  - `usageMessage`: Expected help message.
+  - `testConfigs`: Test configurations with arguments, expected errors, and expected outputs.
+  - **Testing Loop**: Executes `HandleHttp` with each set of arguments and checks the result against expected values.
+
+By running these tests, you can verify that `HandleHttp` behaves as expected under different scenarios.
+
+--- httpCmd.go ---
+
+This Go (Golang) code is designed to handle and parse command-line arguments for an HTTP client. It uses the `flag` package to define and process command-line options. Here's a simplified explanation of what the code does:
+
+What the Code Does
+
+1. Defines a Configuration Structure:
+    - The `httpConfig` struct is defined to hold the HTTP configuration, specifically the URL and the HTTP method (verb) to use.
+    ```go
+    type httpConfig struct {
+        url  string
+        verb string
+    }
+    ```
+
+2. Handles HTTP Commands:
+    - The `HandleHttp` function is responsible for processing the command-line arguments and printing appropriate messages.
+    ```go
+    func HandleHttp(w io.Writer, args []string) error {
+    ```
+
+3. Sets Up Flag Parsing:
+    - A `flag.FlagSet` is created to parse command-line options.
+    - The `-verb` option is defined with a default value of "GET" and a description.
+    ```go
+    var v string
+    fs := flag.NewFlagSet("http", flag.ContinueOnError)
+    fs.SetOutput(w)
+    fs.StringVar(&v, "verb", "GET", "HTTP method")
+    ```
+
+4. Defines Usage Information:
+    - The `Usage` function is customized to print usage information for the HTTP client.
+    ```go
+    fs.Usage = func() {
+        var usageString = `
+http: A HTTP client.
+
+http: <options> server`
+        fmt.Fprintf(w, usageString)
+        fmt.Fprintln(w)
+        fmt.Fprintln(w)
+        fmt.Fprintln(w, "Options: ")
+        fs.PrintDefaults()
+    }
+    ```
+
+5. Parses Command-Line Arguments:
+    - The `Parse` method is called to parse the command-line arguments.
+    - If there is an error during parsing, it returns the error.
+    ```go
+    err := fs.Parse(args)
+    if err != nil {
+        return err
+    }
+    ```
+
+6. Validates Arguments:
+    - It checks if the correct number of arguments are provided (expecting exactly one argument for the server URL).
+    - If not, it returns an `ErrNoServerSpecified` error.
+    ```go
+    if fs.NArg() != 1 {
+        return ErrNoServerSpecified
+    }
+    ```
+
+7. Sets Configuration and Prints a Message:
+    - It sets the URL and HTTP verb in the `httpConfig` struct.
+    - Prints "Executing http command" to indicate that the command is being executed.
+    ```go
+    c := httpConfig{verb: v}
+    c.url = fs.Arg(0)
+    fmt.Fprintln(w, "Executing http command")
+    return nil
+    ```
+
+Example Usage
+
+Here is how you might use this code from the command line:
+
+- To get the usage information:
+    ```bash
+    mync http -h
+    ```
+
+- To specify a server and HTTP verb:
+    ```bash
+    mync http -verb POST http://localhost
+    ```
+
+Summary
+
+- Defines a command-line interface: The code sets up a simple command-line interface for an HTTP client using the `flag` package.
+- Parses command-line options: It parses options like `-verb` to specify the HTTP method.
+- Validates input: Ensures that the user provides the necessary arguments.
+- Prints helpful messages: Provides usage information and feedback on what the command is doing.
+
+This structure is typical in Go programs to manage and handle command-line arguments effectively.
+
+---  ---

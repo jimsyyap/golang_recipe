@@ -13,34 +13,31 @@ type grpcConfig struct {
 }
 
 func HandleGrpc(w io.Writer, args []string) error {
-    c := grpcConfig{}
-    fs := flag.NewFlagSet("grpc", flag.ContinueOnError)
-    fs.SetOutput(w)
-    fs.StringVar(&c.method, "method", "", "method to call")
-    fs.StringVar(&c.body, "body", ""< "body of request")
-    fs.Usage = func() {
-        var usageString = `Usage: mync grpc -h
-    grpc: A gRPC client.
-    Grpc: <options> server
+	c := grpcConfig{}
+	fs := flag.NewFlagSet("grpc", flag.ContinueOnError)
+	fs.SetOutput(w)
+	fs.StringVar(&c.method, "method", "", "Method to call")
+	fs.StringVar(&c.body, "body", "", "Body of request")
+	fs.Usage = func() {
+		var usageString = `
+grpc: A gRPC client.
 
-    Options:
-        -body string
-            Body of request
-        -method string
-            Method of request
-    `
-        fmt.Fprint(w, usageString)
-    }
-    if err := fs.Parse(args); err != nil {
-        return err
-    }
-    if c.method == "" {
-        return fmt.Errorf("method not specified")
-    }
-    if c.body == "" {
-        return fmt.Errorf("body not specified")
-    }
-    return nil
-}
-    }
+grpc: <options> server`
+		fmt.Fprintf(w, usageString)
+		fmt.Fprintln(w)
+		fmt.Fprintln(w)
+		fmt.Fprintln(w, "Options: ")
+		fs.PrintDefaults()
+	}
+
+	err := fs.Parse(args)
+	if err != nil {
+		return err
+	}
+	if fs.NArg() != 1 {
+		return ErrNoServerSpecified
+	}
+	c.server = fs.Arg(0)
+	fmt.Fprintln(w, "Executing grpc command")
+	return nil
 }
