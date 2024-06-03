@@ -1,0 +1,94 @@
+This Go code is a unit test for the `handleCommand` function. It tests how the function handles different sets of command-line arguments and verifies if the function produces the expected output and errors.
+
+Key Components
+
+1. Imports:
+   - `bytes`: For creating a buffer to capture output.
+   - `testing`: For writing and running tests.
+
+2. TestHandleCommand Function:
+   - This is the main function that contains the test cases for `handleCommand`.
+   - It uses the `testing` package to define a test function.
+
+3. Usage Message:
+   - A string containing the usage instructions for the `mync` command-line tool, explaining the options and commands available.
+
+4. Test Configurations:
+   - A slice of test configurations, each containing:
+     - `args`: The command-line arguments to test.
+     - `output`: The expected output of the function.
+     - `err`: The expected error from the function.
+
+5. Test Execution:
+   - The test iterates over each test configuration, calls `handleCommand` with the provided arguments, and checks the result against the expected output and error.
+
+Detailed Walkthrough
+
+1. TestHandleCommand Function:
+   - This function sets up the test cases and runs them.
+
+   ```go
+   func TestHandleCommand(t *testing.T) {
+   ```
+
+2. Usage Message:
+   - A string containing usage instructions for the `mync` command-line tool.
+
+   ```go
+   usageMessage := `Usage: mync [http|grpc] -h
+   ...
+   `
+   ```
+
+3. Test Configurations:
+   - A slice of test configurations with different scenarios to test `handleCommand`.
+
+   ```go
+   testConfigs := []struct {
+       args   []string
+       output string
+       err    error
+   }{
+       {
+           args:   []string{},
+           err:    errInvalidSubCommand,
+           output: "Invalid sub-command specified\n" + usageMessage,
+       },
+       ...
+   }
+   ```
+
+4. Test Execution:
+   - The test runs each configuration, calls `handleCommand`, and checks if the output and error match the expectations.
+
+   ```go
+   byteBuf := new(bytes.Buffer)
+   for _, tc := range testConfigs {
+       err := handleCommand(byteBuf, tc.args)
+       if tc.err == nil && err != nil {
+           t.Fatalf("Expected nil error, got %v", err)
+       }
+
+       if tc.err != nil && err.Error() != tc.err.Error() {
+           t.Fatalf("Expected error %v, got %v", tc.err, err)
+       }
+
+       if len(tc.output) != 0 {
+           gotOutput := byteBuf.String()
+           if tc.output != gotOutput {
+               t.Errorf("Expected output to be: %#v, Got: %#v", tc.output, gotOutput)
+           }
+       }
+       byteBuf.Reset()
+   }
+   ```
+
+Summary
+
+- Purpose: The code is a unit test for the `handleCommand` function. It ensures that `handleCommand` correctly handles various sets of command-line arguments by checking the output and errors against expected values.
+- Components:
+  - Usage Message: Provides the expected output when `-h` is passed or when an invalid command is specified.
+  - Test Configurations: Defines different scenarios to test, including no arguments, help flag, and invalid command.
+  - Test Execution: Runs each test case, calls `handleCommand`, and verifies if the output and error are as expected.
+
+This code helps ensure that the `handleCommand` function behaves correctly and provides meaningful error messages and usage instructions when incorrect arguments are passed.
