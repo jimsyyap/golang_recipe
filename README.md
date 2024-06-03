@@ -5,6 +5,7 @@
 - seek security analyst + golang
 . The lean statup summarized https://youtu.be/RSaIOCHbuYw?si=Kn83LMSg1dWiQUp6
     learn build measure
+. build a mailer software, that will focus on sending emails to office365 inbox only, https://www.youtube.com/@spamerofficial-dj9of
 
 ### notes
 rand.Seed deprecated? Do...

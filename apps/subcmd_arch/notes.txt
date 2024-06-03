@@ -1,3 +1,58 @@
+--- main.go ---
+
+This Go code is a command-line tool that provides functionality for handling HTTP and gRPC commands. It demonstrates how to manage different subcommands and their respective options, providing usage information when needed. Here’s a simplified explanation of what the code does:
+
+Breakdown of the Code
+
+1. Imports:
+   - The code imports necessary packages for error handling, input/output operations, and subcommand handling.
+
+2. Global Variables:
+   - `errInvalidSubCommand`: An error message used when an invalid subcommand is provided.
+
+3. printUsage Function:
+   - This function prints the usage instructions for the tool, indicating how to use the `http` and `grpc` subcommands. It also calls the help handlers of these subcommands to show their specific options.
+
+4. handleCommand Function:
+   - This function handles the logic for determining which subcommand to execute based on the provided arguments.
+   - It checks if there are any arguments provided. If not, it sets the error to `errInvalidSubCommand`.
+   - It uses a switch statement to handle the different subcommands:
+     - `"http"`: Calls the `HandleHttp` function from the `cmd` package.
+     - `"grpc"`: Calls the `HandleGrpc` function from the `cmd` package.
+     - `"-h"` and `"-help"`: Calls the `printUsage` function to display usage information.
+     - Default: Sets the error to `errInvalidSubCommand`.
+   - If the error is due to a missing server specification or an invalid subcommand, it prints the error and usage information.
+   - Returns the error.
+
+5. main Function:
+   - This is the entry point of the program.
+   - It calls the `handleCommand` function with the standard output and command-line arguments (excluding the program name).
+   - If an error occurs, the program exits with a status code of 1.
+
+Usage
+
+- Command Line Arguments:
+  - The tool expects subcommands like `http` or `grpc` followed by their specific options.
+  - Example:
+    ```bash
+    mync http -verb GET http://example.com
+    mync grpc -method myMethod -body '{"key":"value"}' http://example.com
+    ```
+
+- Help Options:
+  - You can get help information by running:
+    ```bash
+    mync -h
+    mync http -h
+    mync grpc -h
+    ```
+
+Summary
+
+This Go code is a command-line tool framework that handles subcommands for HTTP and gRPC operations. It checks for valid subcommands and their options, provides usage instructions, and executes the appropriate functions from the `cmd` package. The design allows for easy extension to support additional subcommands and options in the future.
+
+---  handle_command_test.go  ---
+
 This Go code is a unit test for the `handleCommand` function. It tests how the function handles different sets of command-line arguments and verifies if the function produces the expected output and errors.
 
 Key Components
