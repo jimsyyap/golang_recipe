@@ -1,0 +1,84 @@
+This code is designed to connect to a Quote of the Day (QOTD) server via UDP, request a quote, and then print the received quote.
+
+Main Function
+
+```go
+func main() {
+	fmt.Println(qotd("djxmmx.net:17"))
+}
+```
+
+1. func main(): The main entry point of the program.
+2. fmt.Println(qotd("djxmmx.net:17")): Calls the `qotd` function with the address of the QOTD server and prints the result.
+
+qotd Function
+
+```go
+func qotd(s string) string {
+	udpAddr, err := net.ResolveUDPAddr("udp", s)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "qotd: %v\n", err)
+		os.Exit(1)
+	}
+
+	conn, err := net.DialUDP("udp", nil, udpAddr)
+	buffer := make([]byte, 1024)
+	conn.Write([]byte("\n"))
+	conn.Read(buffer)
+	return string(buffer[0:])
+	conn.Close()
+
+	return string(buffer)
+}
+```
+
+1. func qotd(s string) string: This function takes a string `s` (the address of the QOTD server) and returns a string (the quote).
+2. udpAddr, err := net.ResolveUDPAddr("udp", s): Resolves the address of the QOTD server.
+   - `udpAddr`: The resolved UDP address.
+   - `err`: Error if any occurred while resolving the address.
+3. if err != nil {...}: If there is an error resolving the address, print the error message to `os.Stderr` and exit the program with a status code of 1.
+4. conn, err := net.DialUDP("udp", nil, udpAddr): Dials a UDP connection to the resolved address.
+   - `conn`: The UDP connection.
+   - `err`: Error if any occurred while dialing the connection.
+5. buffer := make([]byte, 1024): Creates a buffer of 1024 bytes to store the incoming data.
+6. conn.Write([]byte("\n")): Sends a newline character to the QOTD server to request a quote.
+7. conn.Read(buffer): Reads the response from the server into the buffer.
+8. return string(buffer[0:]): Converts the buffer to a string and returns it. (Note: This line will be executed before `conn.Close()` is called, which is a bug because `conn.Close()` should be called before returning the buffer content.)
+9. conn.Close(): Closes the UDP connection. (This line will never be executed because the function returns before reaching it, which is incorrect.)
+
+Summary
+
+- QOTD Client: This code acts as a client for the Quote of the Day (QOTD) service, connecting to a server that provides quotes.
+- Address Resolution: The `qotd` function resolves the address of the QOTD server using `net.ResolveUDPAddr`.
+- UDP Connection: It creates a UDP connection to the server with `net.DialUDP`.
+- Request and Response: The client sends a request (a newline character) to the server and reads the response into a buffer.
+- Error Handling: If address resolution fails, the program prints an error message and exits.
+- Bug: There is a bug in the code where `conn.Close()` will never be called because the function returns the buffer content before closing the connection. The `return string(buffer)` statement should be moved after `conn.Close()`.
+
+Corrected Code
+
+Here's the corrected version of the function:
+
+```go
+func qotd(s string) string {
+	udpAddr, err := net.ResolveUDPAddr("udp", s)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "qotd: %v\n", err)
+		os.Exit(1)
+	}
+
+	conn, err := net.DialUDP("udp", nil, udpAddr)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "qotd: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close()
+
+	buffer := make([]byte, 1024)
+	conn.Write([]byte("\n"))
+	conn.Read(buffer)
+	return string(buffer)
+}
+```
+
+This corrected code ensures that `conn.Close()` is called before the function returns the buffer content.

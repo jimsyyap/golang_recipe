@@ -1,11 +1,13 @@
 # my golang_recipe
 
+This serves as my golang toolbox. Use grep to scan through files and folders. This repository is updated on a regular basis.
+
 ## TODO
 
-- seek security analyst + golang
+. June 2024 Project: building a mailer software for client. Send emails to office365 inbox only. This video served as reference...client claims he is not going to use it for spam https://www.youtube.com/@spamerofficial-dj9of
+
 . The lean statup summarized https://youtu.be/RSaIOCHbuYw?si=Kn83LMSg1dWiQUp6
     learn build measure
-. build a mailer software, that will focus on sending emails to office365 inbox only, https://www.youtube.com/@spamerofficial-dj9of
 
 ### notes
 rand.Seed deprecated? Do...
