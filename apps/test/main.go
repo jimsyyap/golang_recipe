@@ -24,6 +24,6 @@ func main() {
 	byteValue, _ := io.ReadAll(jsonFile)
 	var employee Employee
 	_ = json.Unmarshal(byteValue, &employee)
-	json, _ := jsonMarshalIndent(employee, "", " ")
+	json, _ := json.MarshalIndent(employee, "", " ")
 	fmt.Println(string(json))
 }

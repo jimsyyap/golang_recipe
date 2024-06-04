@@ -1,0 +1,65 @@
+This code sets up a simple UDP server that listens on port 3000, receives messages from clients, logs the received messages, and then responds to the clients with a newline character.
+
+Main Function
+
+```go
+func main() {
+	conn, err := net.ListenUDP("udp", &net.UDPAddr{
+		Port: 3000,
+		IP:   net.ParseIP("0.0.0.0"),
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	defer conn.Close()
+	log.Printf("Listening %s\n", conn.LocalAddr().String())
+```
+
+1. func main(): The main entry point of the program.
+2. conn, err := net.ListenUDP("udp", &net.UDPAddr{...}): Starts listening for UDP connections on port 3000 and binds to all available IP addresses (`0.0.0.0`).
+   - `conn`: A pointer to the UDP connection.
+   - `err`: Error if any occurred while starting the listener.
+   - `net.UDPAddr{Port: 3000, IP: net.ParseIP("0.0.0.0")}`: Defines the address to listen on, with port 3000 and IP address `0.0.0.0`.
+
+3. if err != nil {...}: If there is an error, panic and stop the program using `panic(err)`.
+4. defer conn.Close(): Ensures that the connection is closed when the main function exits.
+5. log.Printf("Listening %s\n", conn.LocalAddr().String()): Logs the address the server is listening on.
+
+UDP Message Handling
+
+```go
+	for {
+		message := make([]byte, 512)
+		_, remoteAddr, err := conn.ReadFromUDP(message[:])
+		if err != nil {
+			panic(err)
+		}
+
+		data := strings.TrimSpace(string(message))
+		log.Printf("Received: %s from %s\n", data, remoteAddr)
+		conn.WriteToUDP([]byte("\n"), remoteAddr)
+	}
+}
+```
+
+1. for {...}: An infinite loop that continually reads from the UDP connection.
+2. message := make([]byte, 512): Creates a buffer of 512 bytes to store incoming data.
+3. _, remoteAddr, err := conn.ReadFromUDP(message[:]): Reads data from the UDP connection into the buffer.
+   - `remoteAddr`: The address of the remote client.
+   - `err`: Error if any occurred while reading.
+4. if err != nil {...}: If there is an error reading from the connection, panic and stop the program using `panic(err)`.
+5. data := strings.TrimSpace(string(message)): Converts the byte slice `message` to a string and trims any leading or trailing whitespace.
+6. log.Printf("Received: %s from %s\n", data, remoteAddr): Logs the received message and the address of the remote client.
+7. conn.WriteToUDP([]byte("\n"), remoteAddr): Sends a newline character back to the client.
+
+Summary
+
+- UDP Server Setup: The program sets up a UDP server that listens on port 3000, binding to all available IP addresses (`0.0.0.0`).
+- Message Handling: The server reads incoming UDP messages into a 512-byte buffer.
+- String Processing: The server converts the byte slice to a string and trims any leading or trailing whitespace using `strings.TrimSpace`.
+- Logging: The server logs the received message and the address of the remote client.
+- Response: After logging, the server responds to the client by sending a newline character.
+- Error Handling: The server uses `panic` to handle any errors that occur while reading messages. This is generally not recommended for production code but can be useful for simple scripts or debugging.
+
+This program continuously listens for incoming UDP messages, processes each message by logging it, and sends a response back to the client. The use of `defer` ensures that the connection is properly closed when the program terminates.

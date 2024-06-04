@@ -1,0 +1,72 @@
+This code creates a simple TCP echo server using the `gnet` library. An echo server sends back (or "echoes") the data it receives from clients.
+
+Package and Imports
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/panjf2000/gnet"
+)
+```
+
+1. package main: This defines the package name. `main` is a special package in Go which tells the compiler that this package will produce an executable program.
+2. import: This is used to include libraries.
+   - `fmt`: For formatted I/O operations.
+   - `log`: For logging information.
+   - `github.com/panjf2000/gnet`: The `gnet` library is used for building high-performance network servers.
+
+Defining the Echo Server
+```go
+type echoServer struct {
+	*gnet.EventServer
+}
+```
+
+- type echoServer struct {...}: This defines a new type `echoServer` which embeds `*gnet.EventServer`. Embedding `*gnet.EventServer` means that `echoServer` inherits methods from `gnet.EventServer`, and can override them if needed.
+
+React Method
+```go
+func (es *echoServer) React(frame []byte, c gnet.Conn) (out []byte, action gnet.Action) {
+	out = ([]byte)("return - " + string(frame))
+	fmt.Println("Reacting....")
+	return
+}
+```
+
+1. func (es *echoServer) React(...): This method is called whenever the server receives data from a client.
+   - `frame []byte`: The data received from the client.
+   - `c gnet.Conn`: The connection from which the data was received.
+   - `out []byte`: The data to be sent back to the client.
+   - `action gnet.Action`: An action indicating what the server should do next (e.g., `None`, `Close`, `Shutdown`).
+2. out = ([]byte)("return - " + string(frame)): This constructs the response by converting the received data to a string, prefixing it with "return - ", and converting it back to a byte slice.
+3. fmt.Println("Reacting...."): This prints "Reacting...." to the console each time the server reacts to a message.
+4. return: This returns the response and the action.
+
+Main Function
+```go
+func main() {
+	echo := new(echoServer)
+	log.Fatal(gnet.Serve(echo, "tcp://:9001", gnet.WithMulticore(true)))
+}
+```
+
+1. echo := new(echoServer): This creates a new instance of `echoServer`.
+2. log.Fatal(gnet.Serve(echo, "tcp://:9001", gnet.WithMulticore(true))):
+   - gnet.Serve(echo, "tcp://:9001", gnet.WithMulticore(true)): This starts the server, telling it to listen for TCP connections on port 9001.
+     - `echo`: The server instance to use.
+     - `"tcp://:9001"`: The address and port to listen on.
+     - `gnet.WithMulticore(true)`: This option enables multicore support, allowing the server to use multiple CPU cores for handling connections.
+   - log.Fatal(...): If `gnet.Serve` returns an error, `log.Fatal` will log the error and terminate the program.
+
+Summary
+
+1. The program defines an echo server that listens on port 9001.
+2. When the server receives data, it responds with "return - " followed by the received data.
+3. The server uses the `gnet` library, which is designed for high-performance network applications.
+4. The server runs in multicore mode, utilizing multiple CPU cores to handle incoming connections efficiently.
+
+This code creates a simple, efficient echo server capable of handling multiple clients concurrently, thanks to the power of the `gnet` library and Go's concurrency features.

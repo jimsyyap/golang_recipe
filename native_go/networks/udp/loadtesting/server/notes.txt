@@ -1,0 +1,62 @@
+This code sets up a simple UDP server that listens on port 3333, receives messages from clients, simulates processing the messages for 10 milliseconds, and then responds to the clients.
+
+Main Function
+```go
+func main() {
+	conn, err := net.ListenUDP("udp", &net.UDPAddr{
+		Port: 3333,
+		IP:   net.ParseIP("0.0.0.0"),
+	})
+```
+
+1. func main(): The main entry point of the program.
+2. conn, err := net.ListenUDP("udp", &net.UDPAddr{...}): Starts listening for UDP connections on port 3333 and binds to all available IP addresses (`0.0.0.0`).
+   - `conn`: A pointer to the UDP connection.
+   - `err`: Error if any occurred while starting the listener.
+   - `net.UDPAddr{Port: 3333, IP: net.ParseIP("0.0.0.0")}`: Defines the address to listen on, with port 3333 and IP address `0.0.0.0`.
+
+```go
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+	log.Printf("listening on %s\n", conn.LocalAddr().String())
+```
+
+3. if err != nil {...}: If there is an error, log the error and terminate the program using `log.Fatal`.
+4. defer conn.Close(): Ensures that the connection is closed when the main function exits.
+5. log.Printf("listening on %s\n", conn.LocalAddr().String()): Logs the address the server is listening on.
+
+UDP Message Handling
+
+```go
+	for {
+		message := make([]byte, 512)
+		_, remoteAddr, err := conn.ReadFromUDP(message[:])
+		if err != nil {
+			log.Fatal(err)
+		}
+		time.Sleep(10 * time.Millisecond)
+		conn.WriteToUDP([]byte("\n"), remoteAddr)
+	}
+}
+```
+
+1. for {...}: An infinite loop that continually reads from the UDP connection.
+2. message := make([]byte, 512): Creates a buffer of 512 bytes to store incoming data.
+3. _, remoteAddr, err := conn.ReadFromUDP(message[:]): Reads data from the UDP connection into the buffer.
+   - `remoteAddr`: The address of the remote client.
+   - `err`: Error if any occurred while reading.
+4. if err != nil {...}: If there is an error reading from the connection, log the error and terminate the program using `log.Fatal`.
+5. time.Sleep(10 * time.Millisecond): Simulates processing the request for 10 milliseconds.
+6. conn.WriteToUDP([]byte("\n"), remoteAddr): Sends a newline character back to the client.
+
+Summary
+
+- UDP Server Setup: The program sets up a UDP server that listens on port 3333, binding to all available IP addresses (`0.0.0.0`).
+- Message Handling: The server reads incoming UDP messages into a 512-byte buffer.
+- Simulated Processing: The server simulates processing each message for 10 milliseconds using `time.Sleep`.
+- Response: After processing, the server responds to the client by sending a newline character.
+- Logging and Error Handling: The server logs the address it is listening on and uses `log.Fatal` to handle any errors that occur while reading messages.
+
+This program continuously listens for incoming UDP messages, processes each message with a simulated delay, and sends a response back to the client. It uses infinite looping to handle multiple messages and defer to ensure the connection is properly closed when the program terminates.

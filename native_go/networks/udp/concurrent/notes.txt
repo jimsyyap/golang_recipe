@@ -1,0 +1,91 @@
+This code creates a simple UDP server that listens on port 3333 and uses multiple goroutines to handle incoming UDP packets. Here's an explanation of the code:
+
+Package and Imports
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net"
+	"runtime"
+)
+```
+
+1. package main: This defines the package name. `main` is a special package in Go that tells the compiler this package will produce an executable program.
+2. import: This is used to include libraries.
+   - `fmt`: For formatted I/O operations.
+   - `log`: For logging information.
+   - `net`: For networking, to handle UDP connections.
+   - `runtime`: For interacting with the Go runtime, particularly to get the number of available CPU cores.
+
+listen Function
+```go
+func listen(i int, connection *net.UDPConn, quit chan struct{}) {
+	buffer := make([]byte, 512)
+	for {
+		_, remote, err := connection.ReadFromUDP(buffer)
+		if err != nil {
+			break
+		}
+
+		log.Println(fmt.Sprintf("(Routine %d) Connection from %s - %s", i, remote.String(),
+			string(buffer)))
+		connection.WriteToUDP([]byte("\n"), remote)
+	}
+	quit <- struct{}{}
+}
+```
+
+1. func listen(i int, connection *net.UDPConn, quit chan struct{}): This is a function that runs in a goroutine to handle incoming UDP packets.
+   - `i`: An integer to identify the goroutine.
+   - `connection`: A pointer to the UDP connection.
+   - `quit`: A channel to signal when the goroutine should stop.
+2. buffer := make([]byte, 512): Creates a buffer of 512 bytes to store incoming data.
+3. for {...}: An infinite loop that continually reads from the UDP connection.
+4. _, remote, err := connection.ReadFromUDP(buffer): Reads data from the UDP connection into the buffer.
+   - `remote`: The address of the remote client.
+   - `err`: Error if any occurred while reading.
+5. if err != nil {...}: If there is an error reading from the connection, break the loop.
+6. log.Println(fmt.Sprintf(...)): Logs the connection details and the received message.
+7. connection.WriteToUDP([]byte("\n"), remote): Sends a newline character back to the client.
+8. quit <- struct{}{}: Sends an empty struct to the quit channel, signaling that this goroutine has finished.
+
+Main Function
+```go
+func main() {
+	addr := net.UDPAddr{
+		Port: 3333,
+	}
+	connection, err := net.ListenUDP("udp", &addr)
+	if err != nil {
+		panic(err)
+	}
+	quit := make(chan struct{})
+	for i := 0; i < runtime.NumCPU(); i++ {
+		log.Println("Spinning up UDP server - ", i)
+		id := i
+		go listen(id, connection, quit)
+	}
+	<-quit
+}
+```
+
+1. func main(): The main entry point of the program.
+2. addr := net.UDPAddr{Port: 3333}: Defines the address to listen on, which is port 3333.
+3. connection, err := net.ListenUDP("udp", &addr): Starts listening for UDP connections on the specified address.
+   - `connection`: A pointer to the UDP connection.
+   - `err`: Error if any occurred while starting the listener.
+4. if err != nil {...}: If there is an error, panic and stop the program.
+5. quit := make(chan struct{}): Creates a channel to signal when a goroutine should stop.
+6. for i := 0; i < runtime.NumCPU(); i++ {...}: Loops over the number of CPU cores, starting a goroutine for each core.
+   - `runtime.NumCPU()`: Returns the number of CPU cores available.
+7. log.Println("Spinning up UDP server - ", i): Logs the creation of a new server goroutine.
+8. id := i: Stores the current loop index in `id` to avoid issues with the loop variable being shared by all goroutines.
+9. go listen(id, connection, quit): Starts a new goroutine to handle incoming UDP packets.
+10. <-quit: Waits for a message on the `quit` channel, which will be sent when one of the goroutines finishes.
+
+Summary
+- Multi-core UDP Server: This code sets up a UDP server that listens on port 3333 and handles incoming packets using multiple goroutines, one for each CPU core.
+- Concurrent Handling: Each goroutine runs the `listen` function, which continuously reads data from the UDP connection, logs it, and sends back a response.
+- Synchronization: The `quit` channel is used to signal when a goroutine has finished, causing the main function to exit once any goroutine stops.

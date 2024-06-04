@@ -1,0 +1,88 @@
+The code implements a simple TCP server that listens for incoming connections on port 3333, reads messages sent to it, logs the received messages, and sends back a confirmation message to the sender.
+
+Package and Imports
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net"
+	"os"
+)
+```
+
+1. package main: This defines the package name. `main` is a special package in Go which tells the compiler that this package will produce an executable program.
+2. import: This is used to include libraries.
+    - `fmt`: For formatted I/O operations.
+    - `log`: For logging information.
+    - `net`: For networking, to handle TCP connections.
+    - `os`: For operating system functions, like exiting the program.
+
+Main Function
+
+```go
+func main() {
+	t := net.JoinHostPort("localhost", "3333")
+	l, err := net.Listen("tcp", t)
+	if err != nil {
+		fmt.Println("error listening", err.Error())
+	}
+	defer l.Close()
+	log.Println("listening on port 3333")
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			log.Println("error accepting ", err.Error())
+			os.Exit(1)
+		}
+		go handleRequest(conn)
+	}
+}
+```
+
+1. t := net.JoinHostPort("localhost", "3333"): This joins the host and port into a single address string `localhost:3333`.
+2. l, err := net.Listen("tcp", t): This starts listening for TCP connections on the address `localhost:3333`.
+    - `l` is the listener object that will accept incoming connections.
+    - `err` will contain any error that occurs while trying to listen.
+3. if err != nil {...}: This checks if there was an error starting the listener. If so, it prints the error and does not continue.
+4. defer l.Close(): This ensures that the listener is closed when the main function exits.
+5. log.Println("listening on port 3333"): This logs that the server is now listening on port 3333.
+6. for {...}: This starts an infinite loop to accept incoming connections.
+7. conn, err := l.Accept(): This accepts an incoming connection.
+    - `conn` is the connection object representing the client.
+    - `err` will contain any error that occurs while accepting the connection.
+8. if err != nil {...}: This checks if there was an error accepting the connection. If so, it logs the error and exits the program.
+9. go handleRequest(conn): This starts a new goroutine to handle the connection. `handleRequest` is called in a separate thread, allowing the server to handle multiple connections concurrently.
+
+Handle Request Function
+```go
+func handleRequest(conn net.Conn) {
+	buf := make([]byte, 1024)
+	len, err := conn.Read(buf)
+	if err != nil {
+		fmt.Println("error reading", err.Error())
+	}
+	log.Println("received", string(buf[:len]))
+	conn.Write([]byte(fmt.Sprintf("msg recv: %s", buf[:len])))
+	conn.Close()
+}
+```
+
+1. func handleRequest(conn net.Conn): This is a function to handle an individual connection.
+    - `conn` is the connection object representing the client.
+2. buf := make([]byte, 1024): This creates a buffer (byte slice) of size 1024 to store incoming data.
+3. len, err := conn.Read(buf): This reads data from the connection into the buffer.
+    - `len` is the number of bytes read.
+    - `err` will contain any error that occurs while reading.
+4. if err != nil {...}: This checks if there was an error reading from the connection. If so, it prints the error.
+5. log.Println("received", string(buf[:len])): This logs the received message, converting the byte slice to a string.
+6. conn.Write([]byte(fmt.Sprintf("msg recv: %s", buf[:len]))): This sends a response back to the client, confirming that the message was received.
+    - `fmt.Sprintf("msg recv: %s", buf[:len])` creates a formatted string with the received message.
+    - `[]byte(...)` converts the string to a byte slice to send over the connection.
+7. conn.Close(): This closes the connection once the response has been sent.
+
+Summary
+
+This Go program is a simple TCP server that listens on port 3333. It accepts incoming connections, reads messages sent by clients, logs these messages, and sends back a confirmation message. The server can handle multiple connections concurrently thanks to the use of goroutines (`go handleRequest(conn)`).
