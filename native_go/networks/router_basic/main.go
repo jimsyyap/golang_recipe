@@ -1,0 +1,24 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+type router struct{}
+
+func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	switch req.URL.Path {
+	case "/a":
+		fmt.Fprint(w, "a")
+	case "/b":
+		fmt.Fprint(w, "b")
+	default:
+		http.Error(w, "Not Found", http.StatusNotFound)
+	}
+}
+
+func main() {
+	var r router
+	http.ListenAndServe(":8000", &r)
+}
