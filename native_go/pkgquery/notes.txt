@@ -1,0 +1,165 @@
+### Overview
+
+This Go code defines a function to fetch package data from a given URL, parse the JSON response, and return the package information as a slice of structs.
+
+### Detailed Explanation
+
+1. Package Declaration:
+    ```go
+    package pkgquery
+    ```
+    This line declares the package name. `pkgquery` is the name of this package.
+
+2. Import Statements:
+    ```go
+    import (
+        "encoding/json"
+        "io"
+        "net/http"
+    )
+    ```
+    These lines import necessary packages:
+    - `encoding/json`: For JSON encoding and decoding.
+    - `io`: For basic I/O operations.
+    - `net/http`: For making HTTP requests.
+
+3. Struct Definition:
+    ```go
+    type pkgData struct {
+        Name    string `json:"name"`
+        Version string `json:"version"`
+    }
+    ```
+    - Struct Declaration: `pkgData` is a struct type with two fields, `Name` and `Version`, both of which are strings.
+    - JSON Tags: The struct fields have JSON tags (`json:"name"` and `json:"version"`), indicating the JSON field names to map to these struct fields.
+
+4. Function to Fetch Package Data:
+    ```go
+    func fetchPackageData(url string) ([]pkgData, error) {
+        var packages []pkgData
+        r, err := http.Get(url)
+        if err != nil {
+            return packages, err
+        }
+        defer r.Body.Close()
+
+        if r.Header.Get("Content-Type") != "application/json" {
+            return packages, err
+        }
+        data, err := io.ReadAll(r.Body)
+        if err != nil {
+            return packages, err
+        }
+        err = json.Unmarshal(data, &packages)
+        return packages, err
+    }
+    ```
+    - Function Declaration: The function `fetchPackageData` takes a URL as a string and returns a slice of `pkgData` structs and an error.
+    - HTTP GET Request: `http.Get(url)` makes an HTTP GET request to the specified URL.
+    - Error Handling: If there's an error making the GET request, the function returns an empty slice and the error.
+    - Defer Close: `defer r.Body.Close()` ensures that the response body is closed after the function completes, to free up resources.
+    - Content-Type Check: It checks if the response's `Content-Type` header is `application/json`. If not, it returns an empty slice and the error.
+    - Read Response: `io.ReadAll(r.Body)` reads the entire response body into a byte slice.
+    - JSON Unmarshal: `json.Unmarshal(data, &packages)` parses the JSON-encoded data into the `packages` slice.
+    - Return: The function returns the `packages` slice and any error encountered during JSON unmarshalling.
+
+Summary
+
+This Go code defines a function to:
+1. Send an HTTP GET request to a specified URL.
+2. Check if the response content type is JSON.
+3. Read the response body.
+4. Parse the JSON data into a slice of `pkgData` structs.
+5. Return the parsed data or an error if any step fails.
+
+This is useful for fetching and parsing JSON data from web APIs that provide information about packages or other similar structured data.
+
+//---- pkgquery_test.go
+
+Overview
+
+This Go code defines a test for a function that fetches package data from a remote server. It creates a test server with predefined package data, runs the test, and verifies the function's behavior.
+
+Detailed Explanation
+
+1. Package Declaration:
+    ```go
+    package pkgquery
+    ```
+    This line declares the package name. `pkgquery` is the name of this package.
+
+2. Import Statements:
+    ```go
+    import (
+        "fmt"
+        "net/http"
+        "net/http/httptest"
+        "testing"
+    )
+    ```
+    These lines import necessary packages:
+    - `fmt`: For formatted I/O operations like printing.
+    - `net/http`: For HTTP client and server implementations.
+    - `net/http/httptest`: For creating test HTTP servers.
+    - `testing`: For writing tests in Go.
+
+3. Function to Start a Test HTTP Server:
+    ```go
+    func startTestPackageServer() *httptest.Server {
+        pkgData := `[
+        {"name": "package1", "version": "1.1"},
+        {"name": "package2", "version": "1.0"}
+        ]`
+        ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            w.Header().Set("Content-Type", "application/json")
+            fmt.Fprint(w, pkgData)
+        }))
+        return ts
+    }
+    ```
+    - Function Declaration: `startTestPackageServer` creates and starts a test HTTP server.
+    - Package Data: The server returns a JSON array of package data when requested.
+    - HTTP Handler: `http.HandlerFunc` defines a function to handle HTTP requests. It sets the `Content-Type` header to `application/json` and writes the package data to the response.
+    - Return Test Server: The function returns the test server instance.
+
+4. Test Function:
+    ```go
+    func TestFetchPackageData(t *testing.T) {
+        ts := startTestPackageServer()
+        defer ts.Close()
+
+        packages, err := fetchPackageData(ts.URL)
+        if err != nil {
+            t.Fatal(err)
+        }
+        if len(packages) != 2 {
+            t.Fatalf("Expected 2 packages, Got back: %d", len(packages))
+        }
+    }
+    ```
+    - Function Declaration: `TestFetchPackageData` is a test function for the `fetchPackageData` function. In Go, test functions start with `Test` and take a `*testing.T` parameter.
+    - Start Test Server: It starts the test HTTP server by calling `startTestPackageServer`.
+    - Defer Server Close: `defer ts.Close()` ensures that the test server is closed after the test function completes, to free up resources.
+    - Fetch Data: It calls the `fetchPackageData` function (which you should have defined elsewhere) with the URL of the test server.
+    - Check for Errors: If there's an error fetching the data, it fails the test.
+    - Validate Response: It checks if the length of the fetched package slice is 2. If not, it reports an error.
+
+How It Works
+
+1. Start Test Server: The `startTestPackageServer` function creates a mock HTTP server that responds with predefined JSON package data.
+2. Run Test: The `TestFetchPackageData` function:
+   - Starts the test server.
+   - Fetches data from this server using the `fetchPackageData` function.
+   - Checks if there were any errors during the fetch.
+   - Verifies that the fetched data contains exactly two packages.
+   - Reports an error if the conditions are not met.
+
+Summary
+
+This Go code defines a test for the `fetchPackageData` function by:
+1. Creating a mock HTTP server that returns a fixed JSON response.
+2. Fetching data from this mock server.
+3. Checking if the number of packages fetched matches the expected number (2).
+4. Reporting any errors if the fetched data does not meet the expectations.
+
+By using `httptest.NewServer`, the code creates a controlled environment to test HTTP client code without making real network requests, making the tests reliable and fast.
