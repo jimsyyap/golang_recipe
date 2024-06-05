@@ -1,0 +1,143 @@
+Overview
+
+This code is a simple web application that handles RSVPs (responses to invitations). It allows users to fill out a form to RSVP, and it shows a list of all RSVPs. It uses HTML templates to display different web pages.
+
+Detailed Explanation
+
+1. Importing Packages:
+   ```go
+   import (
+       "fmt"
+       "html/template"
+       "net/http"
+   )
+   ```
+   - fmt: Used for printing messages.
+   - html/template: Used to manage HTML templates.
+   - net/http: Used to handle web server functions.
+
+2. Defining Structures and Variables:
+   ```go
+   type Rsvp struct {
+       Name, Email, Phone string
+       WillAttend bool
+   }
+
+   var responses = make([]*Rsvp, 0, 10)
+   var templates = make(map[string]*template.Template, 3)
+   ```
+   - Rsvp: A structure to hold RSVP data (name, email, phone, and whether they will attend).
+   - responses: A slice to store RSVP responses.
+   - templates: A map to store HTML templates.
+
+3. **Loading Templates**:
+   ```go
+   func loadTemplates() {
+       templateNames := [5]string { "welcome", "form", "thanks", "sorry", "list" }
+       for index, name := range templateNames {
+           t, err := template.ParseFiles("layout.html", name + ".html")
+           if (err == nil) {
+               templates[name] = t
+               fmt.Println("Loaded template", index, name)
+           } else {
+               panic(err)
+           }
+       }
+   }
+   ```
+   - This function loads HTML templates from files and stores them in the `templates` map.
+   - If there's an error loading a template, it stops the program with `panic`.
+
+4. HTTP Handlers:
+   ```go
+   func welcomeHandler(writer http.ResponseWriter, request *http.Request) {
+       templates["welcome"].Execute(writer, nil)
+   }
+
+   func listHandler(writer http.ResponseWriter, request *http.Request) {
+       templates["list"].Execute(writer, responses)
+   }
+   ```
+   - welcomeHandler: Displays the welcome page.
+   - listHandler: Displays a list of all RSVP responses.
+
+5. Form Handling:
+   ```go
+   type formData struct {
+       *Rsvp
+       Errors []string
+   }
+
+   func formHandler(writer http.ResponseWriter, request *http.Request) {
+       if request.Method == http.MethodGet {
+           templates["form"].Execute(writer, formData {
+               Rsvp: &Rsvp{}, Errors: []string {},
+           })
+       } else if request.Method == http.MethodPost {
+           request.ParseForm()
+           responseData := Rsvp {
+               Name: request.Form["name"][0],
+               Email: request.Form["email"][0],
+               Phone: request.Form["phone"][0],
+               WillAttend: request.Form["willattend"][0] == "true",
+           }
+
+           errors := []string {}
+           if responseData.Name == "" {
+               errors = append(errors, "Please enter your name")
+           }
+           if responseData.Email == "" {
+               errors = append(errors, "Please enter your email address")
+           }
+           if responseData.Phone == "" {
+               errors = append(errors, "Please enter your phone number")
+           }
+           if len(errors) > 0 {
+               templates["form"].Execute(writer, formData {
+                   Rsvp: &responseData, Errors: errors,
+               })            
+           } else {
+               responses = append(responses, &responseData)
+               if responseData.WillAttend {
+                   templates["thanks"].Execute(writer, responseData.Name)
+               } else {
+                   templates["sorry"].Execute(writer, responseData.Name)
+               }
+           }
+       }
+   }
+   ```
+   - **formHandler**: Handles both displaying and processing the RSVP form.
+     - If the request is a GET request, it shows the form.
+     - If the request is a POST request, it processes the form data, validates it, and either shows an error or adds the response to the list and shows a thank-you or sorry page.
+
+6. **Main Function**:
+   ```go
+   func main() {
+       loadTemplates()
+
+       http.HandleFunc("/", welcomeHandler)
+       http.HandleFunc("/list", listHandler)
+       http.HandleFunc("/form", formHandler)
+
+       err := http.ListenAndServe(":5000", nil)
+       if (err != nil) {
+           fmt.Println(err)
+       }
+   }
+   ```
+   - **main**: Starts the web server.
+     - Calls `loadTemplates` to load the HTML templates.
+     - Sets up HTTP handlers for the welcome page, list page, and form page.
+     - Starts the web server on port 5000.
+
+### In Summary
+
+This code sets up a simple web server that:
+- Shows a welcome page.
+- Displays an RSVP form.
+- Processes the form data and stores it.
+- Shows a thank-you or sorry message based on the response.
+- Displays a list of all RSVPs.
+
+It's like a mini web app for handling event invitations!
