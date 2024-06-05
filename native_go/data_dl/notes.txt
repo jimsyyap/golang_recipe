@@ -1,0 +1,162 @@
+Overview
+
+This Go code fetches data from a specified URL and prints it to the standard output (usually the console).
+
+Detailed Explanation
+
+1. Package Declaration:
+    ```go
+    package main
+    ```
+    This line declares the package name. `main` indicates that this package contains the main function, which is the entry point of the program.
+
+2. Import Statements:
+    ```go
+    import (
+        "fmt"
+        "io"
+        "net/http"
+        "os"
+    )
+    ```
+    These lines import necessary packages:
+    - `fmt`: For formatted I/O operations like printing to the console.
+    - `io`: For basic I/O operations.
+    - `net/http`: For making HTTP requests.
+    - `os`: For interacting with the operating system, such as reading command-line arguments.
+
+3. Function to Fetch Remote Resource:
+    ```go
+    func fetchRemoteResource(url string) ([]byte, error) {
+        r, err := http.Get(url)
+        if err != nil {
+            return nil, err
+        }
+        defer r.Body.Close()
+        return io.ReadAll(r.Body)
+    }
+    ```
+    - Function Declaration: The function `fetchRemoteResource` takes a URL as a string and returns the fetched data as a byte slice (`[]byte`) and an error (`error`).
+    - HTTP GET Request: `http.Get(url)` makes an HTTP GET request to the specified URL.
+    - Error Handling: If there's an error in the GET request, it returns `nil` and the error.
+    - Defer: `defer r.Body.Close()` ensures that the response body is closed after the function finishes, to free up resources.
+    - Read Response: `io.ReadAll(r.Body)` reads the entire response body and returns it as a byte slice.
+
+4. Main Function:
+    ```go
+    func main() {
+        if len(os.Args) != 2 {
+            fmt.Fprintf(os.Stdout, "Must specify a HTTP URL to get a data from")
+            os.Exit(1)
+        }
+        body, err := fetchRemoteResource(os.Args[1])
+        if err != nil {
+            fmt.Fprintf(os.Stdout, "Error: %s", err)
+            os.Exit(1)
+        }
+        fmt.Fprintf(os.Stdout, "%s", body)
+    }
+    ```
+    - Check Command-line Arguments: `len(os.Args) != 2` checks if exactly one argument (the URL) is provided. `os.Args` is a slice containing the command-line arguments passed to the program.
+    - Error Message and Exit: If the URL is not provided, it prints an error message to the standard output and exits the program with a status code of 1.
+    - Fetch Data: `fetchRemoteResource(os.Args[1])` calls the previously defined function with the URL provided as a command-line argument.
+    - Error Handling: If there's an error fetching the data, it prints the error message and exits the program with a status code of 1.
+    - Print Data: If successful, it prints the fetched data to the standard output.
+
+Summary
+
+This Go program does the following:
+1. Takes a URL as a command-line argument.
+2. Makes an HTTP GET request to fetch data from the provided URL.
+3. Prints the fetched data to the console.
+4. Handles errors gracefully by printing appropriate messages and exiting with a status code.
+
+If you run this program with a valid URL as an argument, it will fetch and display the content of that URL. If you don't provide a URL or there's an error fetching the data, it will print an error message.
+
+//---- fetch-remote-resource.go
+
+Overview
+
+This Go code is designed to test a function that fetches data from a remote resource. It sets up a test HTTP server, makes a request to it, and checks if the response matches the expected result.
+
+Detailed Explanation
+
+1. Package Declaration:
+    ```go
+    package main
+    ```
+    This line declares the package name. `main` indicates that this is the main package of the program.
+
+2. Import Statements:
+    ```go
+    import (
+        "fmt"
+        "net/http"
+        "net/http/httptest"
+        "testing"
+    )
+    ```
+    These lines import necessary packages:
+    - `fmt`: For formatted I/O operations like printing.
+    - `net/http`: For HTTP client and server implementations.
+    - `net/http/httptest`: For creating test HTTP servers.
+    - `testing`: For writing tests in Go.
+
+3. Function to Start a Test HTTP Server:
+    ```go
+    func startTestHTTPServer() *httptest.Server {
+        ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            fmt.Fprintf(w, "Hello, client")
+        }))
+        return ts
+    }
+    ```
+    - Function Declaration: The function `startTestHTTPServer` creates and starts a test HTTP server.
+    - HTTP Handler: `http.HandlerFunc` is used to define a function that handles HTTP requests. In this case, it responds with "Hello, client" to any incoming request.
+    - Return Test Server: The function returns the test server instance.
+
+4. Test Function:
+    ```go
+    func TestFetchRemoteResource(t *testing.T) {
+        ts := startTestHTTPServer()
+        defer ts.Close()
+
+        expected := "hello, client"
+        data, err := fetchRemoteResource(ts.URL)
+        if err != nil {
+            t.Fatal(err)
+        }
+
+        if expected != string(data) {
+            t.Errorf("expected %s, got %s", expected, string(data))
+        }
+    }
+    ```
+    - Function Declaration: The `TestFetchRemoteResource` function is a test function. In Go, test functions start with `Test` and take a `*testing.T` parameter.
+    - Start Test Server: It starts the test HTTP server by calling `startTestHTTPServer`.
+    - Defer Server Close: `defer ts.Close()` ensures that the test server is closed after the test function completes.
+    - Expected Response: The expected response from the server is set to "hello, client".
+    - Fetch Data: It calls the `fetchRemoteResource` function (which you should have defined elsewhere) with the URL of the test server.
+    - Check for Errors: If there's an error fetching the data, it fails the test.
+    - Validate Response: It checks if the fetched data matches the expected response. If not, it reports an error.
+
+How It Works
+
+1. Start Test Server: The `startTestHTTPServer` function creates a test HTTP server that always responds with "Hello, client".
+2. Run Test: The `TestFetchRemoteResource` function:
+   - Starts the test server.
+   - Fetches data from the server using the `fetchRemoteResource` function.
+   - Compares the fetched data with the expected response.
+   - Reports any discrepancies or errors.
+
+Summary
+
+This code sets up a test for the `fetchRemoteResource` function by:
+1. Creating a mock HTTP server that returns a fixed response.
+2. Fetching data from this mock server.
+3. Comparing the fetched data to the expected response.
+4. Reporting any errors if the fetched data does not match the expected response.
+
+By using `httptest.NewServer`, the code creates a controlled environment to test HTTP client code without making real network requests. This makes the tests reliable and fast.
+
+
