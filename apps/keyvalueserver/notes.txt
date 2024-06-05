@@ -1,0 +1,150 @@
+1. **Install Go**: Make sure you have Go installed. You can download it from [golang.org](https://golang.org/dl/).
+
+2. **Create a new Go project**: Initialize a new project directory.
+
+```sh
+mkdir go-redis-server
+cd go-redis-server
+go mod init go-redis-server
+```
+
+3. **Create the server code**:
+
+Create a file `main.go` and add the following code:
+
+```go
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "net"
+    "strings"
+    "sync"
+)
+
+type server struct {
+    store map[string]string
+    mu    sync.RWMutex
+}
+
+func newServer() *server {
+    return &server{
+        store: make(map[string]string),
+    }
+}
+
+func (s *server) handleConnection(conn net.Conn) {
+    defer conn.Close()
+    reader := bufio.NewReader(conn)
+    
+    for {
+        message, err := reader.ReadString('\n')
+        if err != nil {
+            fmt.Println("Connection closed")
+            return
+        }
+        
+        message = strings.TrimSpace(message)
+        parts := strings.Split(message, " ")
+        
+        if len(parts) < 1 {
+            conn.Write([]byte("ERROR: invalid command\n"))
+            continue
+        }
+        
+        command := strings.ToUpper(parts[0])
+        
+        switch command {
+        case "SET":
+            if len(parts) != 3 {
+                conn.Write([]byte("ERROR: invalid SET command\n"))
+                continue
+            }
+            key := parts[1]
+            value := parts[2]
+            s.mu.Lock()
+            s.store[key] = value
+            s.mu.Unlock()
+            conn.Write([]byte("OK\n"))
+        case "GET":
+            if len(parts) != 2 {
+                conn.Write([]byte("ERROR: invalid GET command\n"))
+                continue
+            }
+            key := parts[1]
+            s.mu.RLock()
+            value, ok := s.store[key]
+            s.mu.RUnlock()
+            if !ok {
+                conn.Write([]byte("nil\n"))
+            } else {
+                conn.Write([]byte(value + "\n"))
+            }
+        default:
+            conn.Write([]byte("ERROR: unknown command\n"))
+        }
+    }
+}
+
+func (s *server) run() {
+    listener, err := net.Listen("tcp", ":6379")
+    if err != nil {
+        fmt.Println("Error starting server:", err)
+        return
+    }
+    defer listener.Close()
+    fmt.Println("Server is running on port 6379")
+    
+    for {
+        conn, err := listener.Accept()
+        if err != nil {
+            fmt.Println("Error accepting connection:", err)
+            continue
+        }
+        go s.handleConnection(conn)
+    }
+}
+
+func main() {
+    s := newServer()
+    s.run()
+}
+```
+
+This code does the following:
+
+- Creates a simple in-memory key-value store.
+- Listens for TCP connections on port 6379 (the default Redis port).
+- Handles `SET` and `GET` commands.
+- Uses a mutex to manage concurrent access to the store.
+
+4. **Run the server**:
+
+```sh
+go run main.go
+```
+
+5. **Test the server**:
+
+You can use `telnet` or `nc` (netcat) to connect to your server and test the `SET` and `GET` commands.
+
+```sh
+# Open a terminal and run:
+telnet localhost 6379
+# Or:
+nc localhost 6379
+```
+
+Then, in the telnet or nc session:
+
+```
+SET mykey myvalue
+OK
+GET mykey
+myvalue
+GET nonexistent
+nil
+```
+
+This example is quite basic and lacks many features of a real Redis server, such as data persistence, handling different data types, and efficient memory management. However, it provides a starting point for understanding how you might build a simple in-memory key-value store server in Go.
