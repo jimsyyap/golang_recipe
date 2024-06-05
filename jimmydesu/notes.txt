@@ -1,0 +1,5 @@
+use cases:
+. Maintaining different tokens, tickets, etc.
+. History, journal, logs
+. Trust, security, etc.
+. Accounting, keep track of stuff
