@@ -16,6 +16,14 @@ type PriceResponse struct {
 	} `json:"bitcoin"`
 }
 
+/*
+* TODO:
+* write a function so price prints every x seconds
+* if indicator triggered, send alert
+* alert sent? Set up trade params, pop-up to confirm
+* test
+ */
+
 func main() {
 	//make an http GET request
 	resp, err := http.Get(apiURL)
