@@ -2,8 +2,15 @@ package main
 
 import (
 	"fmt"
-	//"strconv"
+	"math/rand"
+	"strconv"
+	"time"
 )
+
+func dieRoll(size int) int {
+	rand.New(rand.NewSource(time.Now().UnixNano()))
+	return rand.Intn(size) + 1
+}
 
 func main() {
 

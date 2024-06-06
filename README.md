@@ -1,6 +1,8 @@
 # my golang_recipe
 
-This serves as my golang toolbox. Use grep to scan through files and folders. This repository is updated on a regular basis.
+"do one thing well". 
+
+You won't find monolithic code in here. Most of the folders have one or two simple concepts in code. This is my golang toolbox. Use grep to scan through files and folders for that screwdriver that might help...build complex, not complicated. This repository is updated on a regular basis.
 
 ## TODO
 

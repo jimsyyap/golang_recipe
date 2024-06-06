@@ -1,0 +1,73 @@
+This Go code is about creating a simple web server that listens on port 8080 and responds to HTTP requests at the `/helloworld` endpoint with a JSON message. 
+
+Package Declaration and Imports
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+)
+```
+- Package Declaration: The code is in the `main` package, which is the entry point for a Go application.
+- Imports: It imports:
+  - `encoding/json` for JSON encoding.
+  - `fmt` for formatting strings.
+  - `log` for logging messages.
+  - `net/http` for handling HTTP requests and responses.
+
+Data Structure
+```go
+type helloWorldResponse struct {
+	Message string `json:"message"`
+}
+```
+- helloWorldResponse: This struct represents the JSON response structure. It has a single field `Message` which will be converted to JSON with the key `message`.
+
+Main Function
+```go
+func main() {
+	port := 8080
+
+	http.HandleFunc("/helloworld", helloWorldHandler)
+
+	log.Printf("server on port %v\n", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
+}
+```
+- port Variable: Defines the port number (8080) on which the server will listen.
+- http.HandleFunc: Registers the `helloWorldHandler` function to handle requests to the `/helloworld` URL path.
+- log.Printf: Logs a message indicating the server is starting and which port it will use.
+- log.Fatal: Starts the HTTP server on the specified port. If the server fails to start, it logs the error and exits.
+
+Handler Function
+```go
+func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
+	response := helloWorldResponse{Message: "HelloWorld"}
+	data, err := json.Marshal(response)
+	if err != nil {
+		panic("Ooops")
+	}
+
+	fmt.Fprint(w, string(data))
+}
+```
+- helloWorldHandler: This function handles HTTP requests to the `/helloworld` URL path.
+  - response: Creates an instance of `helloWorldResponse` with the message "HelloWorld".
+  - json.Marshal: Converts the `response` struct to JSON format.
+  - Error Handling: If JSON marshalling fails, it panics with the message "Ooops".
+  - fmt.Fprint: Writes the JSON response as a string to the HTTP response writer `w`.
+
+Step-by-Step Execution
+1. Define Port: The server will listen on port 8080.
+2. Register Handler: The `helloWorldHandler` function is registered to handle requests to the `/helloworld` URL path.
+3. Log Server Start: Logs a message indicating that the server is starting and which port it will use.
+4. Start Server: The server starts listening on port 8080. If any errors occur, they are logged, and the program exits.
+5. Handle Requests: When a request is made to `/helloworld`, the `helloWorldHandler` function creates a JSON response with the message "HelloWorld" and sends it back to the client.
+
+Purpose
+The purpose of this code is to demonstrate how to set up a simple HTTP server in Go that responds with a JSON message when a specific endpoint (`/helloworld`) is accessed. This involves defining a response structure, registering a handler function, and starting the server.
+
+---  ---
