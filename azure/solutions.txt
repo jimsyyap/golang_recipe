@@ -1,4 +1,64 @@
-# You are designing an applicatin that will be hosted in azure. The app will host video files that range from 50MB to 12GB. The application will use certificate-based authentication and will be available to users on the internet. Recommend a storage opiton for the video files. The solution must provide the fastest read performance and must minimize storage costs.
+# 
+you are planning an azure iot hub solution that will include 50k iot devices. Each device will stream data, including temp, device id, time data. Approximately 50k records will be written every second. The data will be visualized in near real time. You need to recommend a service to store and query the data. Which services can you recommend?
+
+A - For a solution that includes 50,000 IoT devices streaming data at a high throughput (approximately 50,000 records per second), and requires near real-time data visualization, you will need a robust architecture that includes services capable of handling high ingestion rates, efficient storage, and fast querying capabilities. Here are the recommended Azure services:
+
+    1. Azure IoT Hub
+    - Role: Ingestion of data from IoT devices.
+    - Functionality: Manages bi-directional communication between IoT devices and the cloud. It handles device provisioning, authentication, and high-throughput data ingestion.
+
+    2. Azure Stream Analytics
+    - Role: Real-time data processing.
+    - Functionality: Processes the incoming data stream from Azure IoT Hub in near real-time, allowing for filtering, aggregation, and transformation of data before storing or visualizing it.
+    - Integration: Directly integrates with Azure IoT Hub for input and with various outputs like Azure Data Lake Storage, Azure Blob Storage, Azure SQL Database, or Power BI for visualization.
+
+    3. Azure Data Explorer (ADX)
+    - Role: Storage and querying of data.
+    - Functionality: A fast and highly scalable data exploration service optimized for log and telemetry data. It provides powerful query capabilities and near real-time analytics on large volumes of data.
+    - Integration: Can directly ingest data from Azure Stream Analytics and provide fast query responses, ideal for real-time data visualization.
+
+    4. Azure Time Series Insights (TSI)
+    - Role: Storage, querying, and visualization of time-series data.
+    - Functionality: Specialized in time-series data, TSI offers optimized storage, querying, and visualization capabilities for telemetry data. It provides built-in analytics and can handle high-throughput data ingestion.
+    - Integration: Directly integrates with Azure IoT Hub for data ingestion and provides near real-time analytics and visualization capabilities.
+
+    Recommended Architecture
+
+    1. Azure IoT Hub: Ingest data from the 50,000 IoT devices.
+    - Handles device communication, ensuring secure and reliable data ingestion.
+
+    2. Azure Stream Analytics: Process data in real-time.
+    - Consumes data from IoT Hub, performs necessary transformations, aggregations, and filtering.
+
+    3. Azure Data Explorer (ADX) or Azure Time Series Insights (TSI): Store and query the processed data.
+    - Azure Data Explorer:
+        - High throughput ingestion capabilities, ideal for handling large volumes of data.
+        - Advanced querying capabilities for real-time analytics.
+    - Azure Time Series Insights:
+        - Optimized for time-series data with built-in visualization.
+        - Real-time analytics and insights with easy integration.
+
+    4. Visualization:
+    - Power BI: For creating rich visualizations and dashboards using data from ADX or TSI.
+    - Azure Time Series Insights: Provides built-in visualization for time-series data.
+
+    Example Workflow
+
+    1. Data Ingestion: IoT devices send data to Azure IoT Hub.
+    2. Real-Time Processing: Azure Stream Analytics processes the incoming data from IoT Hub.
+    3. Storage and Querying: 
+    - Stream Analytics outputs processed data to Azure Data Explorer or Azure Time Series Insights.
+    - Data is stored and indexed for fast querying.
+    4. Visualization: 
+    - Use Power BI or built-in TSI visualization tools for near real-time data visualization.
+    - Dashboards and reports update in near real-time to reflect incoming data.
+
+    Conclusion
+
+    Combining Azure IoT Hub, Azure Stream Analytics, Azure Data Explorer (ADX), and Azure Time Series Insights (TSI) provides a robust solution to handle high throughput data ingestion, real-time processing, and near real-time visualization. This architecture ensures scalability, reliability, and efficient real-time data analytics suitable for your high-volume IoT scenario. 
+
+# 
+You are designing an applicatin that will be hosted in azure. The app will host video files that range from 50MB to 12GB. The application will use certificate-based authentication and will be available to users on the internet. Recommend a storage opiton for the video files. The solution must provide the fastest read performance and must minimize storage costs.
 
     For hosting video files in an Azure-based application, the ideal solution considering the requirements of fast read performance and minimized storage costs is Azure Blob Storage with Hot Access Tier. Here’s why:
 
