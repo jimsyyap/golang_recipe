@@ -1,0 +1,47 @@
+# You are designing an applicatin that will be hosted in azure. The app will host video files that range from 50MB to 12GB. The application will use certificate-based authentication and will be available to users on the internet. Recommend a storage opiton for the video files. The solution must provide the fastest read performance and must minimize storage costs.
+
+    For hosting video files in an Azure-based application, the ideal solution considering the requirements of fast read performance and minimized storage costs is Azure Blob Storage with Hot Access Tier. Here’s why:
+
+    Azure Blob Storage with Hot Access Tier
+
+    Azure Blob Storage is designed for storing large amounts of unstructured data such as video files. It is highly scalable and integrates well with Azure services.
+
+    Hot Access Tier is optimized for data that is accessed frequently, which is suitable for your application that hosts video files for internet users.
+
+    Key Benefits
+
+    1. Fast Read Performance:
+    - Low Latency: Azure Blob Storage provides low latency for data access, which is critical for video streaming.
+    - CDN Integration: Azure Blob Storage can be integrated with Azure Content Delivery Network (CDN) to further improve the read performance by caching content closer to the users.
+
+    2. Cost Efficiency:
+    - Hot Access Tier: While it has higher storage costs compared to the Cool or Archive tiers, it is still optimized for frequently accessed data, providing a good balance between cost and performance.
+    - Scalability: You pay only for the storage you use and can scale up or down based on demand, avoiding over-provisioning and associated costs.
+
+    3. Security:
+    - Certificate-Based Authentication: Azure Blob Storage supports secure access with Shared Access Signatures (SAS) and can be further secured using Azure Key Vault to manage your certificates and access keys.
+
+    Implementation Steps
+
+    1. Set Up Azure Blob Storage:
+    - Create an Azure Storage account via the Azure Portal, CLI, or ARM templates.
+    - Configure the account with the Hot Access Tier.
+
+    2. Enable Secure Access:
+    - Use Azure Active Directory (AAD) integration for certificate-based authentication.
+    - Manage and rotate your certificates using Azure Key Vault.
+
+    3. Optimize Performance:
+    - Enable Azure CDN to cache your video files at edge locations, improving the read performance for users across the globe.
+    - Configure blob storage for large file uploads and downloads to optimize throughput.
+
+    Additional Considerations
+
+    - Data Redundancy: Choose the appropriate redundancy option (LRS, ZRS, GRS, RA-GRS) based on your durability requirements.
+    - Access Patterns: Regularly review access patterns and adjust the storage tier if needed (e.g., move infrequently accessed files to Cool tier).
+    - Monitoring and Analytics: Use Azure Monitor and Storage Analytics to track the performance and cost metrics, ensuring your solution remains optimal.
+
+    Conclusion
+    By leveraging Azure Blob Storage with Hot Access Tier, you achieve the required fast read performance and cost-effectiveness for hosting large video files. The solution is secure, scalable, and integrates seamlessly with other Azure services, providing a robust platform for your application.
+
+# 
