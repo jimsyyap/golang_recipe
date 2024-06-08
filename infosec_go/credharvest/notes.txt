@@ -1,0 +1,12 @@
+Imagine you have a website with a login page. This code is like a detective who keeps a close eye on everyone who tries to log in. It writes down all the important details in a secret notebook called "creds.txt".
+
+Here's how it works:
+
+1. The Detective: The code sets up a special detective called "log" who is very good at observing and recording information.
+2. The Login Page: The code creates a login page where people can enter their username and password.
+3. The Secret Notebook: The code opens a secret notebook ("creds.txt") where the detective can write down their observations.
+4. The Detective Watches: Every time someone tries to log in, the detective watches closely. They write down the time, the person's username and password, the type of device they're using, and even their secret code name (IP address).
+5. The Website Files: The code also sets up a way for people to see the website's files (like pictures and text) in a folder called "public".
+6. The Website Opens: The code opens the website at a specific address (":8080") and waits for people to arrive.
+
+So, this code is like a detective who helps you keep track of who's trying to log in to your website. It doesn't actually check if the login information is correct, but it's a useful tool for security and monitoring.
