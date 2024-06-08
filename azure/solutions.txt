@@ -1,3 +1,37 @@
+#
+
+
+
+
+# 
+you have an app named appl that uses two on-premise ms sql server db named db1 and db2. You plan to migrate the dbs to azure. You need to recommend a db service for the dbs. The solution must meet the following requirements:
+. Support server-side transactions across db1 and db2
+. Minimize administrative effort to update the solution. Which db service should you recommend?
+
+A - For migrating on-premise ms sql server db to azure, while meeting the requirements of supporting server-side transactions across both databaseses and minimizing administrative effort, use azure sql managed instance. Here's why:
+
+Key features
+1. Ful sql server compatibility
+- Azure SQL Managed Instance provides full compatibility with SQL Server, including support for distributed transactions, cross-database queries, and server-side transactions across multiple databases.
+2. Minimal administrative effort. Managed instance is a paas offering, which means that azure handles most of the administrative tasks such as backups, patching, and high availability. This significantly reduces the administrative overhead compared to managing a traditional sql server env.
+3. High availability and disaster recovery. Built-in high availability with automated backups and point in time restore capabilities. Additionally, you can configure geo-replication for disaster recovery scenarios.
+4. Security - advanced security features such as transparent data encryption (tde), advanced threat protection, and azure active directory integration.
+5. scaling - easily scale compute and storage resources based on your workload requirements.
+
+Implementation steps
+1. Assessment - use the data migration assistant (dma) to assess the compatibility of your on-premise databases with azure sql managed instance and identify any potential issues.
+
+2. Provisioning - create an azure sql managed instance within an azure virtual network (vnet).
+
+3. Migration - use the azure database migration service (dms) to migrate the databases from on-premise sql server to azure sql managed instance. This service supports online and offline migrations and helps ensure minimal downtime during the migration process.
+
+5. Testing - thoroughly test the migrated databases to ensure that all functionalities, including server-side transactions, are working as expected.
+
+6. Go live - once testing is successful, switch over to the azure sql managed instance for production use.
+
+Conclusion
+Azure SQL Managed Instance is the recommended database service for migrating on-premise MS SQL Server databases to Azure while supporting server-side transactions across multiple databases and minimizing administrative effort. The service provides full SQL Server compatibility, high availability, security features, and scalability, making it an ideal choice for your migration scenario.
+
 # 
 you are planning an azure iot hub solution that will include 50k iot devices. Each device will stream data, including temp, device id, time data. Approximately 50k records will be written every second. The data will be visualized in near real time. You need to recommend a service to store and query the data. Which services can you recommend?
 

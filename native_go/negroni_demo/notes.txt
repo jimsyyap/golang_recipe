@@ -1,0 +1,24 @@
+
+Imagine you have a secret club with a password. This code is like a digital bouncer for that club. It checks if someone knows the secret password ("admin" and "password") before letting them in. 
+
+1. The Bouncer: The code creates a special bouncer called "badAuth". This bouncer knows the secret password and checks everyone who tries to enter.
+2. The Door: The code sets up a door (called "/") that leads to a room where the club members can say hello.
+3. The Guard Dog: The code hires a guard dog (called "negroni") to make sure the bouncer does their job properly. The guard dog also makes sure the door only opens for people with the right password.
+4. The Club Opens: The code opens the club at a specific address (":8000") and waits for people to arrive.
+
+How someone gets in:
+
+1. Someone comes to the club's address (":8000") and knocks on the door ("/").
+2. The guard dog wakes up the bouncer.
+3. The bouncer asks for their username and password.
+4. If they have the right password, the bouncer lets them through the door.
+5. They enter the room and the club members greet them with a friendly "Hello!"
+
+If someone doesn't know the password, the bouncer tells them they're not allowed in ("Unauthorized"). 
+
+How to use
+$curl -i http://localhost:8000/hello
+// this gives you error 401 Unauthorized
+
+$ curl -i 'http://localhost:8000/hello?username=admin&password=password'
+// 200 OK hi admin
