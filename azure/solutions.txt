@@ -1,7 +1,30 @@
 #
+you have sql server on an azure virtual machine. The databases are written to nightly as part of a batch process. You need to recommend a disaster recovery solution for the data. The solution must meet the following requirements:
+. Provide the ability to recover in the event of a regional outage
+. Support a recovery time objective of 15 minutes
+. Support a recovery point objective of 24 hours
+. Support automated recovery
+. Minimize costs
+what should you include in the recommendations?
 
+A - azure sql managed instance with geo-replication and auto-failover groups.
 
+Why azure sql managed instance?
+. Managed service: reduces operational overhead, as ms handles patching, backups, and high availability.
+. Built-in geo-replication: enables automatic asynchronous data replication to a secondary region, fulfilling the regional outage requirement.
+. Auto-failover groups: allows for automatic and seamless failover to the secondary region within minutes, meeting the rto of 15 minutes.
 
+Detailed solution:
+1. Migration: migrate your existing sql server database to azure sql managed instance. Unlike the azure database migration service for a seamless transition.
+2. Geo-replication: enable geo-replication for your managed instance. Choose a secondary azure region that is geographically distant from your primary region to minimize the impact of regional outages.
+3. Auto-failover groups: create an auto-failover group that includes your primary and secondary managed instances. Configure the failover policy to prioritize automatic failover in case of primary region failure.
+4. Recovery point objective: the built-in geo-replication provides an rpo close to zero, as transactions are continuously replicated to the secondary region. This easily meets your 24-hour rpo requirement.
+5. Automated recovery: the combination of geo-replication and auto-failover groups ensures automated recovery in case of a disaster. The failover process is transparent to your applications, minimizing downtime.
+6. Cost optimization: while azure sql managed instance might have a slightly higher base cost than running sql server on a vm, it significantly reduces operational costs due to its managed nature. Additionally, you can leverage reserved instances for further cost savings.
+
+Additional considerations:
+. Backup strategy: even with geo-replication and auto-failover, maintain regular backups of your managed instance. This provides an additional layer of protection against data loss due to accidental deletions or corruption.
+. Monitoring and alerting: set up robust monitoring and alerting for your managed instance to proactively detect any performance issues or potential failures.
 
 # 
 you have an app named appl that uses two on-premise ms sql server db named db1 and db2. You plan to migrate the dbs to azure. You need to recommend a db service for the dbs. The solution must meet the following requirements:

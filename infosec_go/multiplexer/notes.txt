@@ -1,0 +1,24 @@
+Imagine you have a big house with many rooms, and you want to direct visitors to the right room based on their name. This code is like a receptionist for your house.
+
+Here's how it works:
+
+1. The Guest List: The code creates a list of names ("attacker1.com") and their corresponding room numbers ("http://10.0.1.20:1000"). This is like knowing which guest belongs in which room.
+
+2. The Receptionist: The code sets up a receptionist (`mux.NewRouter()`) who knows how to direct guests to the correct room.
+
+3. The Room Assignments: The receptionist looks at the guest list and learns which name goes with which room number. It's like the receptionist memorizing the room assignments.
+
+4. The Doors: The receptionist sets up doors (`r.Host(host).Handler(proxy)`) for each room, labeled with the corresponding guest name.
+
+5. The House Opens: The house opens its doors at address ":80" and waits for guests to arrive.
+
+How it works when a guest arrives:
+
+1. A guest (a web browser) knocks on the house's door (":80") and says their name ("attacker1.com").
+2. The receptionist looks up the guest's name in the guest list and finds their room number.
+3. The receptionist directs the guest to the correct door, which leads directly to their room.
+4. The guest enters their room and can do whatever they want there (this code doesn't care what happens inside the room).
+
+In technical terms:
+
+This code sets up a reverse proxy. It listens for incoming web requests on port 80. When a request comes in, it looks at the "Host" header to determine which website the request is for. Then, it forwards the request to the corresponding server (in this case, the server at "http://10.0.1.20:1000"). This allows you to host multiple websites on the same server, each with its own domain name.

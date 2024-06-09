@@ -1,0 +1,135 @@
+This Go code implements a simple ICMP ping utility similar to the Unix/Linux `ping` command. It sends an ICMP Echo Request to a specified address and waits for an Echo Reply to measure the round-trip time. 
+
+Imports
+```go
+import (
+	"fmt"
+	"log"
+	"net"
+	"os"
+	"time"
+
+	"golang.org/x/net/icmp"
+	"golang.org/x/net/ipv4"
+)
+```
+- fmt, log, net, os, time: Standard Go libraries for formatted I/O, logging, network operations, operating system functions, and time management.
+- "golang.org/x/net/icmp": A package for working with ICMP messages.
+- "golang.org/x/net/ipv4": A package for working with IPv4 network protocols.
+
+Constants
+```go
+const (
+	ICMPv4     = 1 // ICMP protocol number for IPv4
+	ListenAddr = "0.0.0.0" // Address to listen for ICMP replies
+)
+```
+- ICMPv4: Defines the protocol number for ICMP over IPv4.
+- ListenAddr: The address on which to listen for ICMP replies (all interfaces).
+
+Main Function
+```go
+func main() {
+	addr := "golang.org"
+	dst, dur, err := Ping(addr)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("Ping %s (%s): %s\n", addr, dst, dur)
+}
+```
+- addr: The address to ping (`golang.org` in this case).
+- Ping: Calls the `Ping` function with the address.
+- log.Printf: Logs the results of the ping, including the address, resolved IP, and round-trip duration.
+
+Ping Function
+```go
+func Ping(addr string) (*net.IPAddr, time.Duration, error) {
+	// Listen for ICMP reply
+	c, err := icmp.ListenPacket("ip4:icmp", ListenAddr)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer c.Close()
+
+	// Resolve DNS to get the real IP of the target
+	dst, err := net.ResolveIPAddr("ip4", addr)
+	if err != nil {
+		panic(err)
+		return nil, 0, err
+	}
+
+	// Prepare new ICMP message
+	m := icmp.Message{
+		Type: ipv4.ICMPTypeEcho,
+		Code: 0,
+		Body: &icmp.Echo{
+			ID:   os.Getpid() & 0xffff,
+			Seq:  1,
+			Data: []byte(""),
+		},
+	}
+
+	// Marshal the data
+	b, err := m.Marshal(nil)
+	if err != nil {
+		return dst, 0, err
+	}
+
+	// Start measuring time
+	start := time.Now()
+
+	// Send ICMP packet now
+	n, err := c.WriteTo(b, dst)
+
+	// Check for error
+	if err != nil {
+		return dst, 0, err
+	} else if n != len(b) {
+		return dst, 0, fmt.Errorf("got %v; want %v", n, len(b))
+	}
+
+	// Allocate 1500 bytes for reading the response
+	reply := make([]byte, 1500)
+
+	// Set deadline of 1 minute
+	err = c.SetReadDeadline(time.Now().Add(1 * time.Minute))
+	if err != nil {
+		return dst, 0, err
+	}
+
+	// Read from the connection
+	n, peer, err := c.ReadFrom(reply)
+	if err != nil {
+		return dst, 0, err
+	}
+	duration := time.Since(start)
+
+	// Use ParseMessage to parse the bytes received
+	rm, err := icmp.ParseMessage(ICMPv4, reply[:n])
+	if err != nil {
+		return dst, 0, err
+	}
+
+	// Check for the type of ICMP result
+	switch rm.Type {
+	case ipv4.ICMPTypeEchoReply:
+		return dst, duration, nil
+	default:
+		return dst, 0, fmt.Errorf("got %+v from %v; want echo reply", rm, peer)
+	}
+}
+```
+1. Listen for ICMP Reply: Creates a listener for ICMP packets on all interfaces.
+2. Resolve DNS: Resolves the provided address (`addr`) to an IP address.
+3. Prepare ICMP Message: Constructs an ICMP Echo Request message.
+4. Marshal Data: Serializes the ICMP message to bytes.
+5. Send ICMP Packet: Sends the ICMP Echo Request to the destination address and starts the timer.
+6. Allocate Buffer: Prepares a buffer to receive the ICMP reply.
+7. Set Deadline: Sets a timeout for reading the reply.
+8. Read Reply: Waits for the ICMP Echo Reply and stops the timer.
+9. Parse Message: Parses the received message to check if it's an Echo Reply.
+10. Return Result: If the reply is valid, returns the destination IP and round-trip duration.
+
+Summary
+This code sends an ICMP Echo Request (ping) to `golang.org`, waits for an Echo Reply, and measures the round-trip time. It logs the result, including the target address, resolved IP address, and the time taken for the ping. If the target address does not respond with an Echo Reply, it returns an error. This mimics the functionality of the `ping` command found on Unix/Linux systems.
