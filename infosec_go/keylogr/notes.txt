@@ -1,0 +1,31 @@
+Imagine a Chat Room
+
+This code is like creating a special chat room where you can send and receive secret messages. Here's how it works:
+
+1. Setting Up the Room (init):
+   Imagine you need a special address to find the chat room and a special code word to enter. The code sets those up.
+   It also prepares a secret message template that will help you understand the messages you receive.
+
+2. Entering the Room (serveWS):
+   When someone wants to join, the code checks if they have the right code word.
+   If they do, it welcomes them into the room.
+   The code keeps listening for any messages they send.
+
+3. Reading Secret Messages:
+   Whenever someone in the room sends a message, the code reads it.
+   Then, it tells everyone else in the room who sent the message and what it says.
+
+4. The Secret Message Decoder (serveFile):
+   This part of the code gives everyone a special decoder tool.
+   This tool helps them understand the secret messages they receive in the chat room.
+
+5. Opening the Room (main):
+   The code opens the chat room at a special address on the internet (like a website).
+   It waits for people to join and starts the secret message exchange.
+
+In simpler words, this code:
+
+* Creates a chat room for secret messages.
+* Makes sure only people with the right code word can enter.
+* Lets people send and receive messages in the room.
+* Gives everyone a tool to decode the secret messages.
