@@ -1,0 +1,32 @@
+
+*Imagine a Special Phone Book for Websites
+
+1. Reading the Secret Code Book (`parse`):
+   - Imagine you have a secret code book called "proxy.config." This book has special instructions for how to find certain websites.
+   - The code first opens the book and reads each line carefully.
+   - Each line has two parts, like a name and a secret address.
+   - The code puts these names and secret addresses into a special list for later.
+
+2. Answering the Phone for Websites (main):
+   - Imagine you're the operator of a phone line for websites. 
+   - When someone calls asking for a website's address, you check the secret code book.
+   - If the website's name is in the book, you find its secret address.
+   - Then, you ask another phone operator (using `dns.Exchange`) to find the actual address using the secret address from the book.
+   - Finally, you tell the caller the website's real address so they can visit it.
+   - If the website isn't in your book, you say you can't find it.
+
+3. Updating the Secret Code Book (go func):
+   - Sometimes, the secret code book gets updated with new names and secret addresses.
+   - A special signal (like a secret knock) tells the code to read the book again.
+   - The code carefully updates its list with the new information.
+
+4. Starting the Phone Line (log.Fatal(dns.ListenAndServe...):
+   - This last part is like setting up the phone line so it's ready to answer calls about website addresses.
+   - If something goes wrong with the setup, the code gets upset and quits (log.Fatal).
+
+In simpler words, this code:
+
+- Reads a special list of websites and their secret addresses.
+- Acts like a phone operator, helping computers find the real addresses of websites using the secret ones.
+- Can update its secret list if needed.
+- Listens for requests about website addresses.
