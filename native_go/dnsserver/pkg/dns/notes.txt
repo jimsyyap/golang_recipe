@@ -1,0 +1,126 @@
+This Go code defines a DNS resolver that forwards DNS queries to another DNS server and retrieves the responses. Here’s a breakdown of what each part of the code does:
+
+Import Statements
+
+- `golang.org/x/net/dns/dnsmessage`: This package provides functionality to handle DNS messages.
+- `net`: For network operations.
+
+DNSResolver Struct
+
+The `DNSResolver` struct has one field:
+- `fwdConn`: A `net.Conn` object representing a connection to the DNS server to which queries will be forwarded.
+
+NewUDPResolver Function
+
+The `NewUDPResolver` function creates and returns a new `DNSResolver` instance:
+- Takes a `net.Conn` object as an argument, which represents the connection to the DNS forwarder.
+- Returns a pointer to a `DNSResolver` with `fwdConn` set to the provided connection.
+
+ResolveDNS Method
+
+The `ResolveDNS` method of `DNSResolver` handles forwarding the DNS query and returning the response:
+1. Pack DNS Message:
+   - Takes a `dnsmessage.Message` object (representing the DNS query) as an argument.
+   - Packs this message into its wire format using `msg.Pack()`. If an error occurs, it returns an empty message and the error.
+
+2. Send DNS Query:
+   - Writes the packed DNS query to `fwdConn` (the connection to the forwarder). If an error occurs, it returns an empty message and the error.
+
+3. Receive DNS Response:
+   - Allocates a buffer (`resBuf`) to read the response from the forwarder.
+   - Reads the response into `resBuf`. If an error occurs, it returns an empty message and the error.
+
+4. Unpack DNS Response:
+   - Creates a `dnsmessage.Message` object to hold the response.
+   - Unpacks the response from `resBuf` into this message using `resMsg.Unpack(resBuf)`. If an error occurs, it returns an empty message and the error.
+
+5. Return Response:
+   - Returns the unpacked `dnsmessage.Message` and `nil` for error if everything goes well.
+
+Summary
+
+- Purpose: This code implements a DNS resolver that forwards DNS queries to another DNS server and processes the responses.
+- Main Components:
+  - `DNSResolver`: A struct that holds the connection to the forwarder.
+  - `NewUDPResolver`: A function to create a new `DNSResolver` instance.
+  - `ResolveDNS`: A method to handle packing a DNS query, sending it to the forwarder, receiving the response, and unpacking it.
+  
+In essence, this code facilitates the forwarding of DNS queries to another DNS server, receiving the responses, and returning them to the requester.
+
+--- server.go ---
+
+This Go code defines a DNS server that listens for DNS requests, forwards them to a resolver, and sends back the responses. Here's a breakdown of what each part of the code does:
+
+Import Statements
+
+- `errors`: For creating error values.
+- `golang.org/x/net/dns/dnsmessage`: For handling DNS messages.
+- `log`: For logging messages.
+- `net`: For network operations.
+
+Global Variables
+
+- `errNotSupported`: An error indicating that a certain type is not supported.
+
+Server Struct
+
+The `Server` struct represents the DNS server and has two fields:
+- `resolver`: A pointer to a `DNSResolver` which handles the actual DNS query forwarding.
+- `conn`: A pointer to a `net.UDPConn` which represents the UDP connection for incoming DNS requests.
+
+NewServer Function
+
+The `NewServer` function creates and returns a new `Server` instance:
+- Takes a UDP connection (`*net.UDPConn`) and a DNS resolver (`*DNSResolver`) as arguments.
+- Returns a pointer to a `Server` initialized with these values.
+
+readRequest Method
+
+The `readRequest` method reads an incoming DNS request:
+1. Allocates a buffer (`buf`) to store the incoming data.
+2. Reads data from the UDP connection into the buffer and gets the client's address.
+3. Unpacks the buffer into a `dnsmessage.Message`.
+4. Returns the unpacked message, the client's address, and any error encountered.
+
+Start Method
+
+The `Start` method starts the DNS server, entering an infinite loop to handle requests:
+1. Calls `handleRequest` to process each incoming request.
+2. Logs any errors encountered during request handling.
+
+handleRequest Method
+
+The `handleRequest` method processes a DNS request:
+1. Calls `readRequest` to read an incoming request.
+2. Logs the questions in the request.
+3. Uses the resolver to forward the DNS query and get a response (`ResolveDNS`).
+4. If an error occurs during resolution, sends an error response to the client and returns the error.
+5. Logs the answers in the response.
+6. Sends the response back to the client.
+
+sendResponseWithError Method
+
+The `sendResponseWithError` method sends an error response to the client:
+1. Sets the response code in the DNS message header based on the error.
+2. Calls `sendResponse` to send the modified message back to the client.
+
+sendResponse Method
+
+The `sendResponse` method sends a DNS response to the client:
+1. Packs the `dnsmessage.Message` into its wire format.
+2. Writes the packed message to the client's address using the UDP connection.
+3. Returns any error encountered during this process.
+
+Summary
+
+- Purpose: This code implements a DNS server that listens for DNS requests, forwards them to a resolver for processing, and sends back the responses.
+- Main Components:
+  - `Server`: A struct representing the DNS server.
+  - `NewServer`: A function to create a new `Server` instance.
+  - `readRequest`: A method to read and unpack incoming DNS requests.
+  - `Start`: A method to start the DNS server and continuously handle requests.
+  - `handleRequest`: A method to process a DNS request, forward it to the resolver, and send back the response.
+  - `sendResponseWithError`: A method to send an error response to the client.
+  - `sendResponse`: A method to send a DNS response to the client.
+
+In essence, this code sets up a DNS server that handles incoming requests, forwards them to another DNS server for resolution, and then sends the responses back to the clients.
