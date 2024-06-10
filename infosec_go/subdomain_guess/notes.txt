@@ -1,0 +1,38 @@
+Imagine a Detective Searching for Hidden Websites
+
+This code is like a detective trying to discover hidden websites connected to a main website (like finding secret rooms in a big mansion). Here's how it works:
+
+1. The Tools (lookupA, lookupCNAME):
+   - The detective has two main tools:
+      - `lookupA`: This tool finds the direct address of a website (like the street address of a house).
+      - `lookupCNAME`: This tool finds aliases or nicknames for websites (like if a house has a secret code name).
+
+2. Following the Clues (lookup):
+   - The detective starts with the main website's name.
+   - They use `lookupCNAME` to see if there are any aliases for it.
+   - If they find an alias, they follow it like a clue, repeating the process.
+   - Eventually, they use `lookupA` to find the real address (if it exists).
+   - They write down the alias and the real address they found.
+
+3. The Detective Team (worker):
+   - The detective has a team of helpers (the `worker` function).
+   - Each helper gets a list of possible website names to check.
+   - They use the same tools (`lookupA` and `lookupCNAME`) to find aliases and real addresses.
+   - They report their findings back to the detective.
+
+4. *Organizing the Information (main):
+   - The detective (the `main` function) gives each helper a list of possible website names (from a wordlist file).
+   - The helpers work in parallel, reporting their findings to the detective.
+   - The detective collects all the findings and organizes them in a neat table.
+
+In Simple Terms
+
+This code is like a detective using special tools to find hidden websites that are connected to a main website. It's a way to discover subdomains (like "[invalid URL removed]" or "[invalid URL removed]") that might not be obvious at first glance. 
+
+Key Points
+
+- DNS: It's like a phonebook for the internet, helping computers find websites using their names.
+- A Record: A type of DNS record that points a website name to its direct address.
+- CNAME Record: A type of DNS record that gives a website an alias.
+- Wordlist: A file containing a list of words that the detective uses to guess possible website names.
+- Concurrency: Using multiple helpers to speed up the search.

@@ -1,0 +1,28 @@
+Imagine a detective trying to unlock a treasure chest.
+
+1. The Treasure Chest and Key:
+    - The treasure chest is a computer system the detective wants to access.
+    - The key is a username and password combination.
+
+2. Gathering Clues:
+    - The detective has a list of possible usernames in a notebook (`os.Args[1]`).
+    - They also know a password they want to try (`os.Args[2]`), the name of the castle where the treasure chest is located (`os.Args[3]`), and the specific room number (`os.Args[4]`).
+
+3. Testing the Keys:
+    - The detective goes through each username in the notebook.
+    - For each username, they try the password and see if it unlocks the treasure chest.
+    - They use a special tool called "smb" to do this. It's like a lockpick for computer systems.
+
+4. Success or Failure:
+    - If the username and password combination works, the detective shouts, "Success!" and writes down the correct combination in their notebook.
+    - If the combination doesn't work, the detective tries the next username on the list.
+
+In Simple Words:
+
+This code tries to guess the correct username and password to access a computer system. It reads a list of usernames from a file, tries each one with a given password, and prints out the successful combinations. 
+
+Key Points:
+
+* SMB: A way computers share files and printers.
+* Authentication: Checking if a username and password are correct.
+* Brute-force attack: Trying many combinations to find the right one (not the best way, but that's what this code does). 
