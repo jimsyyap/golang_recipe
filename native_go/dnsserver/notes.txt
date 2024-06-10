@@ -1,0 +1,45 @@
+This Go code sets up a simple DNS server that forwards DNS requests to another DNS server. Here's an explanation of what each part does:
+
+Import Statements
+
+The `import` block imports necessary packages:
+- `log`: For logging messages.
+- `net`: For network operations.
+- `network.dns/server/pkg/dns`: A custom package, presumably containing the DNS server logic.
+
+DNSConfig Struct
+
+The `DNSConfig` struct defines the configuration for the DNS server:
+- `dnsForwarder`: The address of the DNS server to which requests will be forwarded (e.g., Google's public DNS server `8.8.8.8:53`).
+- `port`: The port on which this DNS server will listen for incoming requests (default is 53, the standard DNS port).
+
+main Function
+
+The `main` function sets up and runs the DNS server:
+
+1. Define Configuration:
+   - Creates an instance of `DNSConfig` with the DNS forwarder set to `8.8.8.8:53` and the listening port set to 53.
+
+2. Set Up UDP Connection for Incoming Requests:
+   - `net.ListenUDP("udp", &net.UDPAddr{Port: dnsconfig.port})`: Listens for incoming UDP requests on the specified port (53). 
+   - If there's an error opening this connection, the program panics (stops with an error message).
+   - Ensures the connection is closed when the program ends with `defer conn.Close()`.
+
+3. Set Up UDP Connection for Forwarding Requests:
+   - `net.Dial("udp", dnsconfig.dnsForwarder)`: Creates a connection to the DNS forwarder (`8.8.8.8:53`).
+   - If there's an error creating this connection, the program panics.
+   - Ensures this connection is closed when the program ends with `defer dnsFwdConn.Close()`.
+
+4. Create and Start DNS Server:
+   - `dns.NewServer(conn, dns.NewUPResolver(dnsFwdConn))`: Creates a new DNS server instance.
+     - `conn`: The connection for incoming DNS requests.
+     - `dns.NewUPResolver(dnsFwdConn)`: A DNS resolver that forwards requests to the specified DNS forwarder.
+   - Logs a message indicating the DNS server is starting on the specified port.
+   - `dnsServer.Listen()`: Starts listening for incoming DNS requests.
+
+Summary
+
+- This code configures a DNS server that listens for DNS requests on port 53.
+- It forwards these requests to Google's public DNS server (`8.8.8.8:53`).
+- The server uses UDP for communication.
+- The custom DNS server and resolver logic is presumably implemented in the `network.dns/server/pkg/dns` package.

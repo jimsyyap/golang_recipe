@@ -101,4 +101,3 @@ func Ping(addr string) (*net.IPAddr, time.Duration, error) {
 		return dst, 0, fmt.Errorf("got %+v from %v; want echo reply", rm, peer)
 	}
 }
-
