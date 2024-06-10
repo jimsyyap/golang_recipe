@@ -1,0 +1,69 @@
+--- http/main.go ---
+
+Imagine a Detective Monitoring Internet Traffic
+
+Think of this code as a detective who's interested in seeing what websites people are visiting and what they're doing on those websites. Here's how it works:
+
+1. Setting Up the Surveillance Equipment:
+   - The detective chooses a place to listen in on internet traffic (like a busy street corner). This is the network interface (`-i`) or a recorded file (`-r`).
+   - They decide what kind of information they're interested in (like "only watch for traffic going to websites"). This is the filter (`-f`).
+
+2. Capturing Data Packets:
+   - The detective starts recording little snippets of information passing by, like fragments of conversations. These are called data packets.
+   - They only keep the interesting parts (like website addresses and what people are typing).
+
+3. Assembling the Puzzle (httpStreamFactory, httpStream):
+   - The detective has a special tool that helps them put the captured data packets back together, like assembling pieces of a puzzle.
+   - This tool focuses on website traffic (HTTP) and tries to rebuild complete website requests.
+
+4. Analyzing the Information (`run`):
+   - As the puzzle pieces come together, the detective starts making sense of the information.
+   - They look for things like:
+      - Which websites were visited (`req.Host`).
+      - What actions were taken on those websites (`req.Method`, `req.RequestURI`).
+      - Any extra information included with the request (`req.Header`).
+
+5. Keeping Track of Time (`main`):
+   - The detective keeps track of time to make sure they don't miss anything.
+   - They periodically check for any incomplete website requests and try to complete them.
+
+In Simple Terms
+
+This code captures information about website traffic passing through a network. It then analyzes this traffic to see which websites are being visited, what actions are being performed, and any additional details included in the communication.
+
+Key Points
+
+- Packets: Small chunks of data sent over the internet.
+- HTTP: The language used for communication between web browsers and websites.
+- tcpassembly: A tool for putting data packets back together to understand the complete communication.
+- BPF filter: A way to specify what kind of data packets to capture.
+
+--- sniffer/main.go ---
+
+Imagine a Special Camera for Internet Messages
+
+1. **Setting Up the Camera (main):**
+   - The code starts by getting a special camera ready. This camera isn't for taking pictures of people, but for recording secret messages that travel between computers on the internet.
+   - It also opens a notebook (a file named `test.pcap`) where it will write down everything the camera sees.
+
+2. **Pointing the Camera (pcap.OpenLive):**
+   - The camera is pointed at a specific cable (like a wire connecting your computer to the internet) called "enp0s31f6". This cable carries lots of messages.
+
+3. **Watching and Recording (for packet := range pSource.Packets()):**
+   - The camera starts recording. Every time a message passes by, it takes a snapshot of the message.
+   - It only records 1,000 snapshots, so it doesn't fill up the notebook too quickly.
+
+4. **Examining the Snapshots (printPacketInfo):**
+   - The code looks at each snapshot and figures out what kind of message it is. 
+   - It checks if the message is about finding websites (DNS), sending information quickly (UDP), having a reliable conversation (TCP), or if it's part of a website you can see in your browser (HTTP).
+   - If it finds anything interesting in the message, like the website addresses or the contents of a web page, it writes it down in the notebook.
+
+**In simple words, this code:**
+
+- Sets up a tool to watch the messages your computer sends and receives on the internet.
+- Takes snapshots of these messages and saves them in a special file.
+- Looks through the snapshots to see what kind of messages they are and what information they contain.
+- Writes down any interesting information in a notebook.
+
+This kind of code is useful for understanding how computers talk to each other and can help solve problems if something goes wrong when you're using the internet.
+
