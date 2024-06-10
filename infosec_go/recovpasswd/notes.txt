@@ -1,0 +1,35 @@
+Imagine a detective trying to crack a secret code.
+
+1. **The Secret Code:**
+
+- There's a secret code (a hash) that the detective needs to figure out. This hash is like a jumbled-up version of a real word or phrase.
+
+2. **The Codebook (dictionary/file):**
+
+- The detective has a codebook (a file) full of possible words and phrases that might be the original message.
+
+3. **The Decoder (ntlmssp.Ntowfv2):**
+
+- The detective has a special decoder tool. It can take a word from the codebook, scramble it in the same way the secret code was scrambled, and see if it matches.
+
+4. **Trying Each Word:**
+
+- The detective goes through each word in the codebook.
+- They use the decoder to scramble the word and compare it to the secret code.
+
+5. **Success or Failure:**
+
+- If the scrambled word matches the secret code, the detective has found the original message! They shout, "Success!" and write down the word they found.
+- If none of the words match, the detective is out of luck. They haven't cracked the code this time.
+
+**In Simple Words:**
+
+This code tries to figure out the original password from a scrambled version (a hash). It reads a list of possible passwords from a file, scrambles each one using a special method, and compares the scrambled version to the hash. If there's a match, it means the original password has been found.
+
+**Key Points:**
+
+- **Hash:** A way to scramble data so it's hard to read.
+- **NTLMv2:** A specific way to scramble passwords used by some computer systems.
+- **Brute-force attack:** Trying lots of possibilities to find the right one (not the best way, but that's what this code does). 
+
+Let me know if you'd like more details on any part!
