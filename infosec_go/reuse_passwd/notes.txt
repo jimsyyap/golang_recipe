@@ -1,0 +1,25 @@
+Imagine a detective trying many keys on many doors.
+
+1. The Keys and the List:
+    - The detective has a special key ring (`options`) with a single username (`os.Args[2]`) and a domain name (`os.Args[3]`). 
+    - Instead of a traditional password, they have a mysterious code called a hash (`os.Args[4]`). 
+    - They also have a notebook (`os.Args[1]`) with a list of addresses for the houses they want to try.
+
+2. Trying the Keys:
+    - The detective goes to each house on their list, one by one.
+    - At each house, they use their special key ring and the mysterious code to try and unlock the door.
+    - They use a special tool called "smb" to do this. It's like a high-tech lockpick for computers.
+
+3. Success or Failure:
+    - If the key ring and code work, the detective shouts, "Login successful!" and writes down the address of the unlocked house in their notebook.
+    - If the key ring and code don't work, the detective notes, "Login failed" for that house and moves on to the next one.
+
+In Simple Words:
+
+This code tries to access multiple computers (houses) using the same username and a special code (hash) instead of a regular password. It reads a list of computer addresses from a file, tries to log in to each one, and tells you which ones were successfully unlocked.
+
+Key Points:
+
+- SMB (Server Message Block): This is a way computers share files and printers over a network.
+- Hash: A scrambled version of a password that's difficult to decipher. This code uses the hash to avoid storing passwords directly.
+- Authentication: The process of verifying the user's identity to grant access.
