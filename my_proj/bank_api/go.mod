@@ -1,4 +1,4 @@
-module bank_api
+module github.com/jimsyyap/bank_api
 
 go 1.22.3
 

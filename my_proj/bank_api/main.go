@@ -15,17 +15,17 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/hibiken/asynq"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jimsyyap/bank_api/api"
+	db "github.com/jimsyyap/bank_api/db/sqlc"
+	_ "github.com/jimsyyap/bank_api/doc/statik"
+	"github.com/jimsyyap/bank_api/gapi"
+	"github.com/jimsyyap/bank_api/mail"
+	"github.com/jimsyyap/bank_api/pb"
+	"github.com/jimsyyap/bank_api/util"
+	"github.com/jimsyyap/bank_api/worker"
 	"github.com/rakyll/statik/fs"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/techschool/simplebank/api"
-	db "github.com/techschool/simplebank/db/sqlc"
-	_ "github.com/techschool/simplebank/doc/statik"
-	"github.com/techschool/simplebank/gapi"
-	"github.com/techschool/simplebank/mail"
-	"github.com/techschool/simplebank/pb"
-	"github.com/techschool/simplebank/util"
-	"github.com/techschool/simplebank/worker"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -132,7 +132,7 @@ func runGrpcServer(
 
 	gprcLogger := grpc.UnaryInterceptor(gapi.GrpcLogger)
 	grpcServer := grpc.NewServer(gprcLogger)
-	pb.RegisterSimpleBankServer(grpcServer, server)
+	pb.Registerbank_apiServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
@@ -189,7 +189,7 @@ func runGatewayServer(
 
 	grpcMux := runtime.NewServeMux(jsonOption)
 
-	err = pb.RegisterSimpleBankHandlerServer(ctx, grpcMux, server)
+	err = pb.Registerbank_apiHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot register handler server")
 	}
@@ -249,4 +249,3 @@ func runGinServer(config util.Config, store db.Store) {
 		log.Fatal().Err(err).Msg("cannot start server")
 	}
 }
-
