@@ -1,0 +1,28 @@
+Imagine a Secret Agent Trying to Enter a Secure Building
+
+This code is like a secret agent trying to get into a special building using a secret code.
+
+1. The Target Building: The code specifies the address of the building as "172.16.248.192". This is like an IP address, a special code that identifies computers on a network.
+
+2. The Secret Agent's Disguise:
+   - The agent uses a special tool called "smb" (like a disguise kit).
+   - They provide a username ("alice"), a domain ("corp"), and a password ("Password123!"). This is like putting on a fake ID badge and uniform.
+
+3. Checking the Building's Security:
+   - The agent tries to enter the building using their disguise.
+   - They check if the building requires a special signature (like a fingerprint or secret handshake) to get in. 
+   - They also check if their disguise worked and they've successfully fooled the security guards.
+
+4. Reporting the Mission Status:
+   - If everything goes well, the agent reports, "Authentication successful!" This means they got inside.
+   - If the agent fails, they report, "Authentication failed!" This means they couldn't get past security.
+
+In Simple Words:
+
+This code tries to connect to a computer (the building) using a specific username and password (the disguise). It also checks if the connection requires extra security (the signature) and if the login was successful.
+
+Key Points:
+
+- SMB (Server Message Block): A way computers share files and printers over a network.
+- Authentication: Checking if a username and password are correct to grant access.
+- Signing: An extra layer of security that may be required for some connections.

@@ -1,0 +1,46 @@
+What's This Code Doing?
+
+Imagine you and your friend are trying to share secret messages. You wouldn't just shout the secrets across the room, right? You'd use a special code to disguise the message. This code is doing something similar, but with computers.
+
+* Secret Handshake (SPNEGO): This code helps computers do a secret handshake before they exchange information. This handshake makes sure only the right computers can understand the messages.
+* Special Language (ASN.1): Computers have their own way of talking. This code uses a special language called ASN.1 to format the secret messages so that they can be understood by the right computers.
+* Codes within Codes (Object Identifiers): Just like how countries have codes (USA, UK, etc.), different types of secret messages have codes too. This code uses special codes called "object identifiers" to tell the computer what kind of secret message it's dealing with.
+* Building Blocks (Structs):  The code uses building blocks called "structs" to organize the different parts of the secret messages. Think of it like putting the message, the sender's name, and the date into different sections of an envelope.
+* Sending and Receiving (Marshal and Unmarshal): The code has instructions for how to prepare the secret messages to be sent (marshal) and how to read them when they are received (unmarshal).
+
+Why Is This Important?
+
+This kind of code is super important for things like:
+
+* Secure Logins: When you log into a website, this code helps make sure your password and other information stay safe from prying eyes.
+* Protecting Files: This code can help protect files on your computer so that only people with the right permission can see them.
+* Secure Communication: When computers talk to each other over the internet, this code helps make sure the conversations stay private.
+
+Fancy Words, Simple Ideas:
+
+* Package gss: This is like a toolbox full of tools for secret messages.
+* Constants:  These are like nicknames for important codes that the computer uses.
+* Functions: These are like mini-instructions that tell the computer how to do specific tasks, like preparing a secret message or reading one.
+* Encoding/asn1: This is the special language that computers use for secret messages.
+
+--- oid.go ---
+
+You have a secret code written with dots, like this: "1.3.6.1.5.5.2".  This code is actually a special address for computers to find things. But computers prefer their addresses in a different format, like a list of numbers. This Go code is like a translator that turns the dot-separated code into a list of numbers that the computer can easily understand.
+
+How It Works:
+
+1. The Toolbox (ObjectIDStrToInt):  Imagine a toolbox named "ObjectIDStrToInt." This toolbox has the instructions for translating the code.
+
+2. The Code (oid): You put the secret code ("1.3.6.1.5.5.2") into the toolbox.
+
+3. Cutting It Up (strings.Split): The toolbox finds all the dots (".") in the code and cuts it up into pieces. Now you have little pieces like "1", "3", "6", and so on.
+
+4. Numbers Only (strconv.Atoi): The toolbox looks at each piece and changes it from a word into a number. So "1" becomes the number 1, "3" becomes 3, and so on.
+
+5. Making a List (ret): The toolbox takes all the numbers it made and puts them into a nice, organized list.
+
+6. The Result: Finally, the toolbox gives you back the list of numbers: [1, 3, 6, 1, 5, 5, 2]. This is the same code as before, but now it's in a format that computers love!
+
+Why It Matters:
+
+This code is like the glue that helps computers talk to each other. It makes sure they understand each other's secret codes when they're trying to share information or do important things like logging in or keeping files safe.
