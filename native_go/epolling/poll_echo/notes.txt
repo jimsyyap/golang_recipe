@@ -1,0 +1,25 @@
+Imagine a Special Mailbox:
+
+1. The Mailbox: This code creates a special kind of mailbox on your computer.  Instead of letters, this mailbox receives messages from other computers.
+
+2. The Mail Carrier (Epoll): There's a super-fast mail carrier named Epoll. Epoll's job is to watch the mailbox very closely and tell the computer as soon as a new message arrives. 
+
+3. The Echo (Echo Function): Inside the mailbox, there's an echo machine. Whenever a message arrives, the echo machine reads it, shouts it back out loud (so the sender knows it was received), and then makes a copy of the message to keep.
+
+4. Opening the Mailbox:
+   - The computer sets up the mailbox to receive messages on a specific channel (like a radio station).
+   - It tells the mail carrier (Epoll) to start watching the mailbox.
+
+5. Receiving Messages:
+    - When a message arrives, the mail carrier quickly alerts the computer.
+    - The computer checks if the message is a new connection (like someone knocking on the door to say hello).
+       - If it's a new connection, the computer says hello back and tells the mail carrier to also watch for messages from this new friend.
+    - If it's a regular message, the computer sends it to the echo machine.
+
+What's the Point?
+
+This code is like a basic echo server. It's a simple way for computers to talk to each other. One computer sends a message, and the other computer echoes it back to confirm it was received.
+
+Why Use Epoll?
+
+Epoll is like having a really attentive mail carrier. It makes the mailbox super efficient. Instead of constantly checking for new mail, the computer can focus on other things until Epoll tells it there's a message. This is especially helpful when lots of computers want to send messages at the same time.

@@ -1,0 +1,30 @@
+Imagine a Playground with a Special Slide:
+
+1. The Playground (netpoll): This code sets up a special playground called netpoll. It's designed for computers to connect and play together.
+
+2. The Slide (Listener): In the middle of the playground, there's a slide. This slide is a special entrance where computers can come in and join the fun.
+
+3. The Slide Monitor (EventLoop): A friendly park ranger named EventLoop watches the slide. EventLoop's job is to make sure everyone gets a turn and plays nicely.
+
+4. The Echo Game (echoHandler):  There's a fun game on the playground called "Echo."  
+   - When a computer comes down the slide, they shout a message (like "Hello!").
+   - The echo game listens to the message and then shouts it right back ("-> Hello!").
+
+5. Setting Up the Playground:
+    - The code first chooses a way to decide which computer gets to go down the slide first (like picking a number).
+    - It creates the slide and makes sure it's in the right spot on the playground ("127.0.0.1:8000").
+    - It sets some rules for how long a computer can stay on the slide if they're not playing (1 second or 10 minutes).
+    - It tells the park ranger (EventLoop) to start watching the slide.
+
+6. Playing the Game:
+    - When a computer comes down the slide, EventLoop gives them a turn.
+    - The computer shouts their message into the echo game.
+    - The echo game shouts the message back, adding "->" to the beginning.
+
+What's the Point?
+
+This code is like a simple echo server. It allows computers to connect to the playground, send a message, and receive a response back.  It's a basic way for computers to communicate and make sure their messages are heard.  
+
+Why Use netpoll?
+
+Netpoll is like having a very efficient park ranger (EventLoop). It helps manage lots of computers trying to play at the same time. It makes sure everyone gets a turn and keeps the games running smoothly. 
