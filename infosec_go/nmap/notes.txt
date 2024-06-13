@@ -1,0 +1,40 @@
+What it Does
+
+This code is like a little network detective. It uses a tool called "Nmap" to scan your own computer ("localhost") and find out:
+
+* Open Ports: Which doors (ports) are open on your computer for communication with the outside world.
+* **Services:** What kind of services (like a web server, file sharing, etc.) might be running behind those open doors.
+
+How it Works
+
+1. Sets a Timer: It gives itself 5 minutes to do the scan.
+
+2. Prepares the Scanner: It gets ready to use Nmap.
+
+3. Starts the Scan: It instructs Nmap to scan "localhost" (your own computer).
+
+4. Handles Warnings: If there are any issues during the scan, it tells you about them.
+
+5. Analyzes Results:  It looks at what Nmap found:
+   * If any open ports were discovered, it shows you:
+     * The port number (e.g., 80 for web traffic)
+     * The type of connection allowed (e.g., TCP or UDP)
+     * Whether the port is open, closed, or filtered
+     * The name of the service likely running on that port (e.g., "http" for a web server)
+
+6. Summary: It tells you how many open ports were found and how long the scan took.
+
+In Plain English
+
+Imagine your computer is a house. This code is like someone walking around your house, checking all the doors and windows to see:
+
+* Which ones are unlocked: These are the open ports.
+* What might be going on inside through those unlocked doors: This is the kind of service running on each port.
+
+Why It Matters
+
+Knowing which ports are open and what services are running helps you:
+
+* Understand your security: Are there any services running that you didn't know about?
+* Troubleshoot problems: Is a service you need not running on the correct port?
+* Learn about networking: It's a hands-on way to see how computers communicate.

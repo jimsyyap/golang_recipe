@@ -1,0 +1,34 @@
+What It Does:
+
+This code is like a little program that:
+
+1. Sets Up Signal Handling: It prepares to receive special messages (signals) from the operating system, like when you try to close the program (Ctrl+C).
+
+2. Starts Two Loops: It creates two separate loops of code:
+   * `loop100Times`:  This loop is designed to run 100 times.
+   * `loop1000Times`: This loop is designed to run 1000 times.
+
+3. Counts and Waits: Each loop counts how many times it has run and pauses briefly after each count.
+
+4. Listens for Signals: While the loops are running, the program is also listening for those special signals.
+
+5. Stops Gracefully: If it receives a signal like "stop," it tells the loops to finish what they're doing and then the program ends neatly.
+
+How It Works:
+
+* Channels: The code uses special pathways called "channels" (`signalChan` and `stop`) to pass messages between different parts of the program.
+* Goroutines: The two loops are run as separate "threads" (called goroutines in Go) so they can happen at the same time.
+* Wait Groups: The program uses a "wait group" (`wg`) to keep track of whether the loops are finished. It waits until both loops are done before ending the whole program.
+* **Select Statement:** The `select` statements inside the loops allow the code to check both the `stop` channel (for a "stop" message) and the loop's counting condition at the same time.
+
+In Plain English:
+
+Imagine you have two kids, each assigned to write numbers in a notebook: one up to 100, the other up to 1000. You tell them to start writing, but also that they need to listen for your call to "stop."
+
+While they're writing, you're keeping an eye on them. If you decide it's time to stop, you shout "stop!" They hear it, finish writing the number they're on, and then put their notebooks down. You wait until both kids are done, and then you say, "Great job, everyone!"
+
+Key Points:
+
+* Concurrency: The code demonstrates how Go can handle multiple tasks (the loops) concurrently.
+* Signal Handling: It shows how a program can respond gracefully to signals from the operating system.
+* Synchronization: The wait group ensures that the program doesn't end before the loops are finished.
