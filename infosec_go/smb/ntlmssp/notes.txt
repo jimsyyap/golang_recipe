@@ -1,0 +1,23 @@
+Imagine a Secret Handshake...
+
+This code is like a set of instructions for creating and verifying secret handshakes used in computer networks. These handshakes are part of a protocol called NTLM (NT LAN Manager), which was a way for older Windows computers to identify and authenticate users.
+
+The Handshake Steps
+
+1. Hashing the Password:
+   - The `Ntowfv1` and `Lmowfv2` functions take a password and turn it into a jumbled-up code (a hash) using special algorithms (MD4 and MD5). This makes it harder for someone to figure out the original password just by looking at the hash.
+
+2. Adding Extra Security (HMAC):
+   - The `Ntowfv2` function takes the hashed password and adds some extra ingredients: the username and the computer's domain name. It then uses another algorithm (HMAC) to combine everything into an even more complex hash.
+
+3. The Big Finale (NTLMv2 Response):
+   - The `ComputeResponseNTLMv2` function is where the real magic happens. It takes all sorts of information, including the hashed password, some random data (challenges), and a timestamp, and mixes them together using HMAC.
+   - The result is a super-secret response that only someone who knows the correct password can generate.
+
+Why All This Fuss?
+
+This elaborate process is designed to make it very difficult for an attacker to impersonate a legitimate user on a network. By requiring the correct password and other pieces of information, the system can be more confident that the person trying to log in is who they say they are.
+
+Important Note:
+
+While NTLM was once widely used, it's now considered outdated and less secure than newer authentication methods. Modern systems often use more robust protocols like Kerberos or even passwordless authentication.

@@ -1,4 +1,4 @@
-# my golang_recipe
+# my golang for devOps code snippets
 
 "do one thing well". 
 
@@ -8,11 +8,8 @@ pkg folder is 224MB 09june2024.
 
 ## TODO
 
+. Direct response this
 . Blockchain project - started 04june2024
-. June 2024 Project: building a mailer software for client. Send emails to office365 inbox only. This video served as reference...client claims he is not going to use it for spam https://www.youtube.com/@spamerofficial-dj9of
-
-. The lean statup summarized https://youtu.be/RSaIOCHbuYw?si=Kn83LMSg1dWiQUp6
-    learn build measure
 
 ### notes
 rand.Seed deprecated? Do...
