@@ -1,0 +1,69 @@
+This Go program creates a simple web server that manages a list of movies. Here's an easy-to-understand explanation:
+
+### What It Does
+
+The program lets you:
+
+1. **See all movies**.
+2. **Look at one specific movie**.
+3. **Add a new movie**.
+4. **Update the details of an existing movie**.
+5. **Delete a movie**.
+
+### How It Works
+
+1. **Packages and Imports**: 
+   - Uses packages to help with JSON data, routing URLs, logging, generating random numbers, and handling HTTP requests.
+
+2. **Movie and Director Structures**:
+   - `Movie`: Represents a movie with an ID, ISBN, title, and director.
+   - `Director`: Represents a director with a first name and a last name.
+
+3. **Movies List**:
+   - `movies`: A list to store movie data.
+
+4. **Main Function**:
+   - Sets up the web server.
+   - Adds two example movies to the list.
+   - Defines routes (web addresses) and the actions to take when those addresses are visited.
+   - Starts the server on port 8000.
+
+### Routes and Handlers
+
+1. **getMovies**: Shows all movies.
+   - URL: `/movies`
+   - Method: `GET`
+   - Responds with the list of all movies in JSON format.
+
+2. **getMovie**: Shows one specific movie.
+   - URL: `/movies/{id}`
+   - Method: `GET`
+   - Looks for the movie with the given ID and responds with its details in JSON format.
+   - If the movie is not found, it responds with an error message.
+
+3. **createMovie**: Adds a new movie.
+   - URL: `/movies`
+   - Method: `POST`
+   - Reads the new movie's details from the request body, assigns it a random ID, adds it to the list, and responds with the new movie's details in JSON format.
+
+4. **updateMovie**: Updates an existing movie.
+   - URL: `/movies/{id}`
+   - Method: `PUT`
+   - Finds the movie with the given ID, removes it from the list, reads the updated details from the request body, and adds the updated movie back to the list with the same ID.
+   - Responds with the updated movie's details in JSON format.
+   - If the movie is not found, it responds with an error message.
+
+5. **deleteMovie**: Deletes a movie.
+   - URL: `/movies/{id}`
+   - Method: `DELETE`
+   - Finds the movie with the given ID and removes it from the list.
+   - Responds with the updated list of all movies in JSON format.
+
+### Example Scenario
+
+- **Adding a Movie**: You send a POST request to `/movies` with the new movie's details. The program assigns a random ID to the new movie, adds it to the list, and responds with the new movie's details.
+- **Viewing All Movies**: You visit `/movies` in your browser or send a GET request. The program responds with a list of all movies in JSON format.
+
+### Conclusion
+
+This Go program creates a simple API to manage movies, allowing you to add, view, update, and delete movies using standard web requests.
