@@ -1,0 +1,24 @@
+# 1
+
+a company collects data for temperature, humidity, and atmospheric pressure in cities across multiple continents. The average volume of data that the company collects from each site daily is 500GB. Each site has a high-speed internet connection. The company wants to aggregate the data from all these global sites as quickly as possible in a single amazon s3 bucket. The solution must minimize operational complexity. Which cloud solution meets these requirements?
+
+Answer: AWS Snowball Edge
+why aws snowball edge: 
+. High-speed data transfer - snowball edge is a physical device that can be shipped to each site. It can store up to 80TB of data and has high-speed network interfaces for rapid data transfer over the site's high-speed internet connection.
+. On-device processing: snowball edge has compute capabilities, allowing it to preprocess or aggregate data before transferring it to the cloud. This can reduce the amount of data transferred and speed up the overall process.
+. Direct integration with s3: snowball edge is designed to work seamlessly with amazon s3, making it easy to transfer the collected data directly into yoru desired s3 bucket.
+. Minimal operational complexity - the process of collecting data using snowball edge is relatively simple. You order the device, configure it, ship it to the site, collect the data, and ship it back to aws. Aws handles the data transfer and ingestion into s3.
+
+Other options:
+. Direct upload: while possible with high-speed connections, directly uploading 500GB daily from multiple sites could lead to  bandwidth constraints or network congestion, potentially slowing down the process. 
+. Aws datasync: this service is useful for ongoing data transfer, but it might not be the most efficient for the initial bulk transfer of large data volumes from multiple locations.
+. Aws transfer family - this service is primarily focused on file transfer protocols and might not be the most suitable for the specific requirements of this scenario.
+
+Key advantages of snowball edge:
+. Speed - the physical transfer process is often faster than network transfers for large datasets.
+. Reliability - snowball edge is designed for secure and reliable data transport.
+. Offline capability - it can collect data even if the site temporarily loses internet connectivity.
+
+Overall, aws snowball edge provides a streamlined, efficient, and reliable solution for aggregating large volumes of data from multiple global locations into a single amazon s3 bucket.
+
+

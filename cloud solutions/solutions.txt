@@ -1,4 +1,30 @@
-#
+# 6
+
+hotspot - you plan to develop a new app that will tore business critical data. The app must meet the following requirements:
+. Prevent new data from being modified for one year
+. Maximize data resiliency
+. Minimize read latency
+
+What azure storage solution should you recomment for the app?
+
+Answer:
+For an app that needs to store business-critical data with specific requirements around data immutability, resiliency, and read latency, the recommended Azure storage solution is Azure Blob Storage with Immutable Blob Storage enabled. Here's why:
+
+. Immutable storage: this feature allows you to set a policy on your blob storage containers that prevents data from being modified or deleted for a specified period, in this case, one year. This ensures that your business-critical data remains tamper-proof and compliant with regulatory requirements and prevents accidental or malicious data alteration.
+
+. Maximize data resiliency: azure blog storage offers multiple redundancy options like locally redundant storage (lrs), zone redundant storage (zrs), geo-redundant storage (grs), and read access geo-redundant storade(ra-grs) to protect your data from hardware failures and regional outages. You can choose the level of redundancy that best suits your needs and budget. 
+
+. Minimize read latency: blob storage is optimized for high read throughput and low latency, making it ideal for applications that require fast data retrieval. This is further enhanced by using hot access tier, which keeps frequently accessed data in the most performant storage layer.
+
+Additional considerations:
+. Cost-effectiveness: azure blob storage is generally a cost-effective storage solution, especially when using the cool or archive tiers for less frequently accessed data.
+. Scalability: blob storage is highly scalable, allowing you to easily handle growing data volumes.
+
+Alternative options:
+while other azure storage solutions like azure files or azure disk storage offer some of these features, they dont provide the same level of immutability and low-latency read performance as blob storage with immutable storage.
+
+
+# 5
 you have sql server on an azure virtual machine. The databases are written to nightly as part of a batch process. You need to recommend a disaster recovery solution for the data. The solution must meet the following requirements:
 . Provide the ability to recover in the event of a regional outage
 . Support a recovery time objective of 15 minutes
