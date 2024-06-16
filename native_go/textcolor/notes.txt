@@ -1,0 +1,34 @@
+What it Does:
+
+This code is like a set of special markers for different types of messages. Imagine you have a box of crayons with different colors for different things: green for good news, yellow for a heads-up, red for problems, and blue for secret messages. This code does something similar, but for messages on your computer screen.
+
+How it Works:
+
+1. Special Codes:  The code starts by defining special codes for each type of message:
+   - `Info`:  This code makes messages appear in green (like green crayons).
+   - `Warn`: This code makes messages appear in yellow.
+   - `Error`: This code makes messages appear in red.
+   - `Debug`: This code makes messages appear in blue.
+
+2. Printing Messages:
+   - The `fmt.Println` lines are like writing messages with your different crayons.
+   - Each message starts with the special code (like picking a crayon).
+   - Then, it writes the actual message after the code (like writing with the chosen crayon).
+
+Example:
+
+When you run this code, you'll see something like this:
+
+```
+[INFO] This is an info message
+[WARN] This is a warning message
+[ERROR] This is an error message
+[DEBUG] This is a debug message
+```
+
+Notice how each message has a colored label in front? That's the result of the special codes!
+
+Why This is Useful:
+
+- Clear Messages: By using different colors, this code makes it easier to tell the difference between different types of messages. You can quickly spot errors (red) or warnings (yellow).
+- Organized Information: This kind of labeling is helpful for keeping track of what's happening in a computer program. It's like having different colored folders for different kinds of information. 

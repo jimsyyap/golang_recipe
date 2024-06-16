@@ -1,0 +1,38 @@
+What it Does:
+
+This code acts like a megaphone, sending out different kinds of messages to a special place called the system journal. Imagine the system journal is a giant notebook where your computer writes down important notes about what's happening. This code helps your program write in that notebook with different levels of urgency.
+
+How it Works:
+
+1. The Megaphone: The code uses a tool called "j" (think of it like the megaphone) to send messages.
+
+2. Different Shouts: The megaphone has different settings for how loud or urgent the message is:
+   - `PriErr`:  A regular problem (like saying "Oops!").
+   - `PriCrit`: A bigger problem (like saying "Uh oh!").
+   - `PriAlert`: A serious issue (like saying "Watch out!").
+   - `PriEmerg`: A super important emergency (like yelling "Help!").
+   - `PriWarning`:  A heads-up (like saying "Be careful").
+   - `PriNotice`: Something to note (like saying "Remember this").
+   - `PriInfo`: Just sharing information (like saying "Hey, did you know...").
+   - `PriDebug`:  Extra details for when things go wrong (like whispering clues to a detective).
+
+3. Sending Messages:
+   - Each line of code is like a shout through the megaphone.
+   - The code tells the megaphone how loud to be (`PriErr`, `PriCrit`, etc.).
+   - Then, it says what the message is (e.g., "This log message is from Go application").
+
+Example:
+
+When the code runs, the journal (the notebook) might look something like this:
+
+```
+[ERROR] This log message is from Go application
+[CRITICAL] This log message is from Go application
+[ALERT] This log message is from Go application
+```
+(and so on...)
+
+Why This is Useful:
+
+- Keeping Track: The system journal helps people who manage computers (like system administrators) understand what's happening with different programs. It's like having a record of all the important shouts.
+- Troubleshooting:  If a program isn't working right, those responsible can look in the journal to find clues about what went wrong. The different message levels make it easier to find the most important clues.

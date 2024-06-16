@@ -1,0 +1,25 @@
+What it Does:
+
+This code creates a spinning wheel of text (kind of like a loading icon) in your computer terminal while it's working on something. Think of it like a toy top that spins while you're waiting for something exciting to happen.
+
+How it Works:
+
+1. Making the Spinner:
+   - It uses a special tool called "spinner" that helps create the spinning effect.
+   - It chooses a specific design for the spinner (like choosing a pattern for the top).
+   - It sets the spinner's color to red (like painting the top).
+   - It adds a message in front of the spinner saying "Processing request : " (like writing on the side of the top).
+
+2. Starting the Spin:
+   - It tells the spinner to start spinning (just like giving the top a twist).
+
+3. Doing Some Work:
+   - Imagine you're waiting for a pizza to bake. The code pretends to be doing some work (like the pizza baking in the oven) for 4 seconds.
+
+4. Stopping the Spin:
+   - Once the "work" is done (the pizza is ready!), it tells the spinner to stop (like gently stopping the spinning top).
+
+Why This is Useful:
+
+- Visual Feedback: When you're using a computer program and it's busy, this spinning wheel lets you know that it's still working and hasn't frozen. It's like a little sign saying, "I'm still busy, just a moment!"
+- Fancier Waiting: This spinning wheel is more visually interesting than just staring at a blank screen. It's like having a fun toy to play with while you wait.
