@@ -1,0 +1,26 @@
+What it Does:
+
+This code is like a painter giving your words different colors and styles when they appear in your computer's terminal (that black window where you type commands).
+
+How it Works:
+
+1. Color Toolbox: Imagine a big box of crayons. This code uses a special tool called "color" (think of it as the box) that has lots of crayons inside for making your words colorful.
+
+2. Setting the Mood:
+   - It picks two special crayons for warnings ("Warn") and errors ("Error").
+   - For warnings, it uses a white crayon on a regular background.
+   - For errors, it uses a red crayon on a regular background.
+
+3. Styling Your Words:
+   -  Italic:  It writes the words "Italing style" leaning sideways (like *this*).
+   -  Strikethrough:  It writes the words "Strikethrough style" with a line through the middle (~like this~).
+   -  Bold:  It writes the words "Bold style" in extra dark letters (like  this ).
+
+4.  Special Messages: 
+   -  Warning Message:  It writes "Warning message" in the special white color it picked earlier, maybe with a symbol next to it (like a yellow triangle).
+   -  Error Message:  It writes "Error message" in bright red, maybe with a different symbol (like a red X).
+
+ Why This is Useful: 
+
+-  Clear Messages:  By using different colors and styles, this code makes it easier to spot important messages in your terminal. Warnings stand out in white, and errors scream in red.
+-  Customizable:  You can easily change the colors and styles to match your preferences, just like picking different crayons from the box.
