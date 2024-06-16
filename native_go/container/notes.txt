@@ -1,0 +1,34 @@
+What It Does:
+
+This code acts like a detective, gathering information about different parts of a program running inside containers (imagine containers like boxes that hold pieces of a bigger toy). Then it organizes this information and prints it out in a neat way.
+
+How It Works:
+
+1. Talking to the Informant (cAdvisor):
+   - The code first connects to a special tool called cAdvisor. It's like asking a friendly informant who knows all the secrets about the containers.
+   - It asks cAdvisor for information about all the Docker containers (the boxes holding pieces of the toy).
+
+2. Sorting the Clues (Group Function):
+   - The code receives a bunch of clues about the containers (like their names, what they're doing, etc.).
+   - It then sorts these clues into groups based on a similar part of their name (like putting together puzzle pieces that belong to the same picture).
+
+3. Revealing the Findings:
+   - The code goes through each group of clues.
+   - For each group, it prints out:
+      - The common part of the name (like saying "This group is all about the legs of the toy").
+      - One of the names from the group (like saying "One specific piece in this group is called 'left_leg'").
+
+Example:
+
+Imagine you have a big toy robot. The containers are like different parts of the robot (head, arms, legs, etc.). This code would figure out which clues belong to each part and print something like this:
+
+```
+/kubepods/burstable/pod...: robot-arm
+/kubepods/burstable/pod...: robot-leg
+/kubepods/burstable/pod...: robot-head
+```
+
+Why This is Useful:
+
+- Monitoring and Troubleshooting: This code helps people who manage computer programs understand how different parts are working. If a problem occurs, they can use this information to figure out where things went wrong (like if the robot's arm stopped working, they'd know to look at the clues for the "robot-arm" group).
+- Resource Management: By knowing how each part is behaving, they can also make sure each part gets the right amount of resources (like making sure the legs have enough power to walk).

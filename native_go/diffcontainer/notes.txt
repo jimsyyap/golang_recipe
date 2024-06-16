@@ -1,0 +1,33 @@
+What it Does:
+
+This code acts like a spy, sneaking into a special tool called cAdvisor that knows all the secrets about the different parts of a computer program. It then reports back the names of these secret parts.
+
+How it Works:
+
+1. Contacting the Secret Keeper (cAdvisor):
+   - The code first connects to cAdvisor, which is like a secret agent who knows everything about the computer program.
+   - It asks cAdvisor for information about a specific part of the program, indicated by the "/" symbol (think of it as the headquarters of the program).
+
+2. Uncovering the Secret Parts (Subcontainers):
+   - cAdvisor reveals a list of secret parts, called "subcontainers," that are hidden inside the main part of the program.
+   - Think of these subcontainers like rooms inside the headquarters, each with its own special purpose.
+
+3. Reporting the Findings:
+   - The code goes through each subcontainer in the list.
+   - For each subcontainer, it prints out its name (like revealing the names of the rooms inside the headquarters).
+
+Example:
+
+Imagine the computer program is a giant castle. This code would uncover the names of rooms like the "throne room," "dungeon," "library," and so on. The output might look something like this:
+
+```
+/kubepods/pod74f02a0f-27a8-4033-8283-3697081f0132/691c8316425a1c1f1d28a74a58d7967331812d4552a70b37052c4f4499d17981
+/kubepods/pod74f02a0f-27a8-4033-8283-3697081f0132/pause/21927534421d27d89f6417b2e379f441d368746e636768b36738746894631380
+```
+
+(and so on...)
+
+Why This is Useful:
+
+- Monitoring and Troubleshooting: This code helps people who manage computer programs understand how they're organized. If something goes wrong, they can use the names of the subcontainers to figure out which part is causing the problem.
+- Resource Management: By knowing about the different parts, they can also make sure each part is getting the right amount of resources (like making sure the dungeon isn't using up all the electricity!).

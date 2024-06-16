@@ -1,0 +1,33 @@
+What it Does:
+
+This code acts like a live news reporter, constantly listening to updates from a special tool called cAdvisor that watches what's happening inside containers (imagine containers as boxes that hold different parts of a program). Whenever something interesting happens in those containers, this code tells us about it.
+
+How it Works:
+
+1. Setting Up the Connection (streamingClientExample):
+   - The code starts by connecting to cAdvisor, which is like tuning into a live news channel that broadcasts updates about the containers.
+   - It creates a special channel called `einfo`, which is like a mailbox where cAdvisor can drop off the news updates.
+
+2. Listening for News (go func() ...):
+   - The code starts a background worker (like a dedicated reporter). This worker's job is to constantly listen to the news channel for any new updates from cAdvisor.
+   - If there's a problem getting the news, it shouts out a warning and stops the program.
+
+3. Sharing the News (for ev := range einfo ...):
+   - The main part of the code keeps checking the mailbox (`einfo`) for any new updates.
+   - Whenever a new update arrives, it prints the news to the screen (like the reporter sharing the latest headlines).
+
+Example:
+
+Imagine you're watching a live news broadcast about a busy city. The code would be like the reporter saying things like:
+
+```
+streaming einfo:  A new container called "webserver" just started up!
+streaming einfo:  The "database" container is using a lot of memory!
+streaming einfo:  The "logging" container has stopped unexpectedly!
+```
+
+Why This is Useful:
+
+- Real-Time Monitoring: This code lets you see what's happening inside your containers as it happens, so you can quickly react if something goes wrong.
+- Troubleshooting: If a container crashes or behaves strangely, this live stream of updates can help you figure out why.
+- Resource Management: By seeing how much resources (like memory or CPU) each container is using, you can make sure they're not hogging too much and everything is running smoothly.
