@@ -46,4 +46,40 @@ Additional considerations:
 
 
 # 3
+A company uses aws organizations to manage multiple aws accounts for different departments. The management account has an amazon s3 bucket that contains project reports. The company wants to limit access to this s3 bucket to only users of accounts within the organization. What should an aws solutions architect do to meet these requirements?
 
+Answer:
+Here's a breakdown of the solution and why it's the best approach:
+
+**Solution:**
+
+1. **Create an IAM Role in the Management Account:**
+
+   * Create a new IAM role specifically for cross-account access to the S3 bucket.
+   * Attach a policy to this role that explicitly allows:
+      * `s3:ListBucket` on the specific project reports bucket.
+      * `s3:GetObject` on the objects within the bucket.
+      * (Optional) `s3:PutObject` if you want users from other accounts to be able to upload new reports.
+
+2. **Share the IAM Role with Other Accounts in the Organization:**
+
+   * In the IAM role's trust policy, add a condition that specifies the AWS Organization ID. This ensures that only accounts belonging to your organization can assume the role.
+
+3. **Grant Users in Member Accounts Access to Assume the Role:**
+
+   * In each member account where you want users to access the reports:
+      * Create IAM policies for specific users or groups.
+      * Grant these policies the permission to `sts:AssumeRole` on the cross-account role you created in the management account.
+
+**Why This Approach is Ideal:**
+
+* **Security:** By using an IAM role and explicitly defining permissions, you strictly control who can access the S3 bucket and what actions they can perform. The Organization ID restriction ensures that only trusted accounts within your company can gain access.
+* **Scalability:** This solution works well as your organization grows. You can easily add new accounts to your organization and grant them access to the reports by simply allowing them to assume the shared role.
+* **Least Privilege:** The principle of least privilege is followed. Users in member accounts are only granted the necessary permissions to assume the role, not direct access to the S3 bucket. This reduces the risk of accidental or unauthorized actions.
+
+**Additional Considerations:**
+
+* **Bucket Policy:** While the IAM role approach is preferred, you could also add a bucket policy to the S3 bucket itself. The policy would need a condition to check if the requesting principal is a role from a member account within your organization. However, this can be more complex to manage.
+* **Logging and Monitoring:** Enable S3 access logging and CloudTrail in the management account to track access to the project reports bucket. This provides an audit trail and helps you identify any unauthorized access attempts.
+
+Let me know if you'd like a more detailed walkthrough of how to implement this solution!
