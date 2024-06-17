@@ -99,4 +99,86 @@ Why This is Useful:
 - Network Programming: This code is relevant to network programming, where connections can take time, and it's essential to handle timeouts gracefully.
 
 
--- filename --
+### dial_fanout_test.go
+
+This Go code is a test that checks how network connections behave when they are canceled. Here's how it works:
+
+1. **Setup:**
+   * It creates a deadline (like a timer) that will end after 10 seconds.
+   * It sets up a listener (like a phone line waiting for a call) to accept incoming network connections.
+
+2. **Dialers:**
+   * It creates 10 "dialers" (like 10 people trying to make phone calls).
+   * Each dialer tries to connect to the listener.
+   * The dialers wait for either the deadline to end or for a connection to be established.
+
+3. **Cancellation:**
+   * As soon as one dialer connects, it sends a signal and the deadline is canceled (like someone picking up the phone and the timer stopping).
+   * The other dialers are still waiting, but they will eventually notice that the deadline is canceled and stop trying.
+
+4. **Verification:**
+   * The test checks if the deadline was actually canceled as expected.
+   * It also logs which dialer managed to connect before the cancellation.
+
+**In simple terms:** Imagine you're trying to call a busy phone number with 10 different phones. The first phone that gets through will end the attempt for the others. This code is testing if that behavior works correctly in a network setting.
+
+### dial_test.go
+
+Imagine you have two walkie-talkies. This code tests if they can communicate properly. Here's what it does:
+
+1. **Setting Up:**
+   * It creates a listener, like turning on one walkie-talkie to receive messages.
+   * It creates a signal (`done`) to know when each walkie-talkie is done.
+
+2. **Receiving Messages:**
+   * A separate routine (think of it as a background task) starts on the first walkie-talkie.
+   * It keeps waiting for incoming messages (like someone talking on the other walkie-talkie).
+   * When a message arrives, it reads the message and prints it out.
+
+3. **Sending a Message:**
+   * The main part of the code dials the listener (like calling the other walkie-talkie).
+   * It closes the connection right away (like saying a quick "over and out").
+
+4. **Cleaning Up:**
+   * It waits for the receiver to finish (like waiting for the other person to confirm they heard you).
+   * It closes the listener (like turning off the walkie-talkie).
+
+**In simpler terms:** This code is like a test call between two walkie-talkies. It checks if one can send a signal and the other can receive it correctly, even if the connection is very brief.
+
+### dial_timeout_test.go
+
+This Go code is a test that checks if a network connection can correctly timeout. Here's what it does:
+
+1. **Custom Dial Function (DialTimeout):**
+   * It creates a special function for making network connections called `DialTimeout`.
+   * This function sets up a connection with a specific timeout (like a timer).
+   * The trick is, it also has a hidden rule: it always returns an error saying the connection timed out, even if it doesn't actually take that long.
+
+2. **The Test (TestDialTimeout):**
+   * It uses the `DialTimeout` function to try and connect to a specific address.
+   * Since the function always returns a timeout error, the test expects to see an error.
+   * If it doesn't get an error (meaning the connection somehow succeeded), the test fails.
+   * It then double-checks that the error it received is indeed a timeout error. If it's not, the test fails again.
+
+**In simpler terms:** Imagine you're trying to call a friend but their phone line is always busy. You set a timer to give up after 5 seconds. This code is like a test to make sure your timer works and correctly tells you if your friend didn't pick up in time. The `DialTimeout` function is like your friend's phone line always being busy, and the test is making sure your timer works properly.
+
+
+### listen_test.go
+
+This Go code is a simple test that checks if a network listener can be created successfully. Here's what it does:
+
+1. **Create a Listener:**
+   * It tries to create a listener (like opening a shop and waiting for customers).
+   * The listener is set up to use the "tcp" protocol (a common way computers talk to each other over the internet).
+   * It tells the listener to use "localhost" (your own computer) and any available port (represented by "0").
+
+2. **Check for Errors:**
+   * If there's a problem creating the listener (like the shop already being occupied), it reports an error and stops the test.
+
+3. **Clean Up:**
+   * A special function (`defer`) is used to ensure that the listener is closed (like closing the shop) at the end of the test, no matter what happens.
+
+4. **Log the Address:**
+   * If the listener was created successfully, it prints out the address (like the shop's address) where it's listening for incoming connections.
+
+**In simpler terms:** This code is like testing if you can open a shop at a specific location. It checks if the location is available, and if so, it tells you the address where you can expect customers.
