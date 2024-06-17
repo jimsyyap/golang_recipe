@@ -1,3 +1,0 @@
-blockchain is a db. The token supply, initial user balance, global blockchain settings you define in a genesis file. The genesis balance indicate what was the original blockchain state and are never updated afterwards.
-
-The db state changes are called transactions (tx).

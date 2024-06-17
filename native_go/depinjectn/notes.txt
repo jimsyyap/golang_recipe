@@ -1,0 +1,21 @@
+Imagine you're building a toy car. This car needs an engine to run. Now, you have two ways to do this:
+
+Way 1: Building the engine inside the car
+
+You build the engine directly into the car. This makes the car self-sufficient, but it also makes it hard to change the engine later if you want a different one.
+
+Way 2: Dependency Injection
+
+You create a slot in the car where you can put in an engine. You can then build different engines separately and choose which one to put in the car. This makes it easy to change or upgrade the engine without having to rebuild the entire car.
+
+Dependency Injection in Go
+
+In Go (golang), this "slot" is usually an interface. An interface is like a blueprint for an engine. You define what an engine should do (e.g., start, stop, accelerate). Then, you create different types of engines (electric, gasoline, etc.) that all follow this blueprint.
+
+When you build your car, you don't specify the exact type of engine. Instead, you ask for something that fits the "engine" interface. This way, you can easily switch between different engine implementations without changing the car's code.
+
+Why use Dependency Injection?
+
+* Flexibility: You can easily change or upgrade parts of your program without affecting the rest.
+* Testability: You can easily test different parts of your program in isolation by providing mock implementations of their dependencies.
+* Reusability: You can reuse components in different parts of your program or in different projects.

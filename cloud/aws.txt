@@ -21,4 +21,29 @@ Key advantages of snowball edge:
 
 Overall, aws snowball edge provides a streamlined, efficient, and reliable solution for aggregating large volumes of data from multiple global locations into a single amazon s3 bucket.
 
+# 2
+A company needs the ability to analye log files of its proprietary application. The logs are stored in json format in an amazon s3 bucket. Queries will be simple and will run on-demand. A solutions architect needs to perform the analysis with minimal changes to the existing architecture. What should the aws solutions architect do to meet these requirements with the least amount of operational overhead?
+
+Answer:
+recomment Amazon athena. Here's why:
+1. Serverless architecture - athena is a serverless query service, eliminating the need for infrastructure management or setup. This significantly reduces operational overhead.
+
+2. Direct s3 integration - athena can query data directly in amazon s3 without the need for data extraction, transformation or loading (etl) processess. This simplifies the existing architechure and minimizes changes.
+
+3. Json support - athena has built-in support for querying json-formatted data, making it a perfect fit for the company's log files.
+
+4. On-demand queries - athena is designed for ad-hoc queries, meaning you only pay for the queries you run. This aligns with the requirement for running simple on-demand queries.
+
+5. SQL-like interfaces - athena uses a familiar sql-like interface, making it easy for analysts to write and execute queries.
+
+Here's a simplified plan:
+1. Create an athena table - define an athena table that points to the s3 bucket containing the log files. Specify the json structure of the log files in the table definition.
+2. Start querying - use the athena console or api to write sql queries to analyze the log data. Athena will automatically parse and query the json files in S3.
+
+Additional considerations:
+. Cost - while athena is serverless, you will be charged for the amount of data scanned during queries. Consider using partitioning or compression in s3 to optimize costs.
+. Performance - if the log files are extremely large or queries become complex, consider using athena's federated query feature to query data in other data sources or use a more specialized log analytics solution like amazon opensearch service.
+
+
+# 3
 
