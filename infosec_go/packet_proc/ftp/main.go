@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 
@@ -13,7 +14,7 @@ var (
 	snaplen  = int32(1600)
 	promisc  = false
 	timeout  = pcap.BlockForever
-	filter   = "tcp and port 80"
+	filter   = "tcp and dst port 21"
 	devFound = false
 )
 
@@ -44,7 +45,15 @@ func main() {
 
 	source := gopacket.NewPacketSource(handle, handle.LinkType())
 	for packet := range source.Packets() {
-		fmt.Println(packet)
+		appLayer := packet.ApplicationLayer()
+		if appLayer == nil {
+			continue
+		}
+		payload := appLayer.Payload()
+		if bytes.Contains(payload, []byte("USER")) {
+			fmt.Print(string(payload))
+		} else if bytes.Contains(payload, []byte("PASS")) {
+			fmt.Print(string(payload))
+		}
 	}
 }
-
