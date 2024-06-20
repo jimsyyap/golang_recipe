@@ -9,7 +9,6 @@ pkg folder is 224MB 09june2024.
 ## TODO
 
 . Direct response this
-. Blockchain project - started 04june2024
 
 ### notes
 rand.Seed deprecated? Do...
@@ -37,6 +36,10 @@ POSTGRESQL
 * pgadmin4 not showing your databases? 
     https://stackoverflow.com/questions/61576670/databases-in-psql-dont-show-up-in-pgadmin4
 
-#### The Lean Startup, summarized
-"The Lean Startup" by Eric Ries is a book that introduces a new approach to business development that aims to shorten product development cycles and rapidly discover if a proposed business model is viable. This methodology is designed for startups of all sizes to efficiently allocate resources and build sustainable businesses. Here’s a summary of the key concepts:
+#### Notes, summaries, and quotes
 
+"You're not paid to program, you're not even paid to maintain someone else's program. You're paid to deliver solutions to the business" - Dave Cheney
+
+software engineering vs programming - se is programming integrated over time. Engineering is what happens when things need to live longer and influence of time starts creeping in. Engineering is about making things that last. Programming is about making things that work. - Dave Cheney
+
+simplicity is a great virtue, but it requires hard work to achieve it and education to appreciate it. And to make matters worse: complexity sells better. - Edsger W. Dijkstra
