@@ -23,7 +23,7 @@ type Comment struct {
 }
 
 func populate() []Tutorial {
-    author := &Author{Name: "Elliot Forbes", Tutorials: []int{1}}
+    author := &Author{Name: "jimmy desu", Tutorials: []int{1}}
     tutorial := Tutorial{
         ID: 1,
         Title: "Go GraphQL Tutorial",
@@ -40,6 +40,8 @@ func populate() []Tutorial {
 
 func main() {
     fmt.Println("graphql tutorial")
+
+    tutorials := populate()
 
     var commentType = graphql.NewObject(
         graphql.ObjectConfig{
@@ -88,10 +90,31 @@ func main() {
 
     // schema definition
     fields := graphql.Fields{
-        "hello": &graphql.Field{
-            Type: graphql.String,
+        "tutorial": &graphql.Field{
+            Type: tutorialType,
+            Description: "Get Tutorial By ID",
+            Args: graphql.FieldConfigArgument{
+                "id": &graphql.ArgumentConfig{
+                    Type: graphql.Int,
+                },
+            },
             Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-                return "world", nil
+                id, ok := p.Args["id"].(int)
+                if ok {
+                    for _, tutorial := range tutorials {
+                        if int(tutorial.ID) == id {
+                            return tutorial, nil
+                        }
+                    }
+                }
+                return nil, nil
+            },
+        },
+        "list": &graphql.Field{
+            Type: graphql.NewList(tutorialType),
+            Description: "Get Tutorial List",
+            Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+                return tutorials, nil
             },
         },
     }
@@ -105,7 +128,10 @@ func main() {
 
     // query execution
     query := `{
-        hello
+        list {
+            id
+            title
+        }
     }`
 
     params := graphql.Params{Schema: schema, RequestString: query}
