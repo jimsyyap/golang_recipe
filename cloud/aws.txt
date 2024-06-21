@@ -1,3 +1,48 @@
+# 6
+
+
+
+
+# 5
+A company is hosting a web app on aws using a single amazon ec2 instance that stores user-uploaded documents in an amazon ebs volume. For better scalability and availability, the company duplicated the architecture and created a second ec2 instance and ebs volume in another availability zone, placing both behind an application load balancer. 
+
+After completing this change, users reported that, each time they refreshed the website, they could see one subset of their documents or the other, but never all of the documents at the same time. 
+
+What should a solutions architect do to ensure that users can see all of their documents regardless of which ec2 instance they are routed to?
+
+Answer:
+The problem:
+The issue stems from the fact that each EC2 instance has its own dedicated EBS volume. When a user uploads a document, it's stored on the EBS volume of the EC2 instance they are currently connected to. Subsequent requests may be routed to a different EC2 instance, which doesnt have access to that specific EBS volume.
+
+Solutions:
+To ensure users can consistently access all their documents, the architect needs to implement a shared storage solution. Here are the more common approaches:
+
+1. Amazon elastic file system (EFS)
+. How it works - EFS provides a fully managed, scalable file system that can be mounted to multiple  EC2 instances concurrently. All instances can read and write to the same EFS file system, making it perfect for shared document storage.
+. Benefits - highly scalable, highly available, supports both linux and windows instances.
+. Considerations - potentially higher cost than other options, especially for very large amounths of data.
+
+2. Amazon S3
+. How it works - s3 is an object storage service. Instead of mounting a file system, applications can directly read and write documents to s3 using the s3 api. Since s3 is a global service, all ec2 instances can access the same s3 bucket.
+. Benefits - extremely scalable, highly durable, cost-effective for storing large amonuths of data.
+. Considerations - requires changes to the app code to interact with s3 instead of a local file system.
+
+3. Amazon RDS
+. How it works - if the app already uses a database, storing document metadata (file name, path, etc) in the database and the actual document content in s3 is another good option.
+. Benefits - allows fo rstructured data management and querying of document metadata.
+. Considerations - requires changes to the application to integrate with RDS and potentially additional costs depending on the chosen RDS engine.
+
+Implementation steps (example using EFS):
+1. create EFS file system - set up an efs file system in the same vpc as your ec2 instances.
+2. Mount EFS - mount the EFS file system to both EC2 instances at a common directory path.
+3. update application logic - modify the application to read and write documents to the shared EFS mount point instead of the local EBS volume. For exsiting documents, migrate them from the individual EBS volumes to the efs file system.
+4. Test - thoroughly test the application to ensure that all documents are accessible regardless of which EC2 instance the user is routed to.
+
+Important considerations:
+. Security - ensure appropriate IAM permissions are in place to control access to the shared storage solution.
+. Performance - consider the performance requirements of the application when choosing a shared storage solution.
+. Data migration - plan and execute a data migration strategy to move existing documents to the shared storage solution.
+
 
 # 4
 An application runs on an amazon ec2 instance in a vpc. The application processes logs that are stored in an amazon s3 bucket. The ec2 instance needs to access the s3 bucket without connectivity to the internet. Which aws solution will provide private network connectivity to amazon s3?
