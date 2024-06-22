@@ -1,14 +1,15 @@
-# my golang for devOps code snippets
+# golang solutions 
 
 "do one thing well". 
 
-You won't find monolithic code in here. Most of the folders have one or two simple concepts in code. This is my golang toolbox. Use grep to scan through files and folders for that snippet of code that might help...build complex, not complicated. This repository is updated on a regular basis.
+Nothing monolithic code here. Most of the folders have one or two simple concepts about go. Use grep to scan through files and folders for that snippet of code that might help...build complex, not complicated. This repository is updated on a regular basis.
 
-pkg folder is 224MB 09june2024.
+pkg folder is 224MB as of 09june2024.
 
 ## TODO
 
-. Direct response this
+. Direct response this for seek
+. Laravel to go: build projects
 
 ### notes
 rand.Seed deprecated? Do...

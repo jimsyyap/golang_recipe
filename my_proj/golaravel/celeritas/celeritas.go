@@ -44,6 +44,20 @@ func (c *Celeritas) New(rootPath string) error {
         return err
     }
 
+    err = c.checkDotEnv(rootPath)
+    if err != nil {
+        return err
+    }
+
+    // read .env
+    err = godotenv.Load(rootPath + "/.env")
+    if err != nil {
+        return err
+    }
+
+    // create loggers
+    infoLog, errorLog := c.startLoggers()
+
     return nil
 }
 
@@ -57,4 +71,20 @@ func (c *Celeritas) Init(p initPaths) error {
         }
     }
     return nil
+}
+
+func (c *Celeritas) checkDotEnv(path string) error {
+    err := c.CreateFileIfNotExists(fmt.Sprintf("%s/.env", path))
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+func (c *Celeritas) startLoggers() (*log.Logger, *log.Logger) {
+    var infoLog *log.Logger
+    var errorLog *log.Logger
+
+    infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+    errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 }
