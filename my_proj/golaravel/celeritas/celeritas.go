@@ -57,6 +57,10 @@ func (c *Celeritas) New(rootPath string) error {
 
     // create loggers
     infoLog, errorLog := c.startLoggers()
+    c.InfoLog = infoLog
+    c.ErrorLog = errorLog
+    c.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
+    c.Version = version
 
     return nil
 }
