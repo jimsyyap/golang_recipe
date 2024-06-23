@@ -1,5 +1,30 @@
-# 6
+# 7
 
+
+
+
+# 6
+A company uses NFS to store large video files in on-premises network attached storage. Each video file ranges in size from 1MB to 500GB. The total storage is 70TB and is no longer growing. The company decides to migrate the video files to amazon S3. The company must migrate the video files as soon as possible while using the least possible network bandwidth. Which aws solution will meet these requirements?
+
+Answer:
+AWS Snowball Edge. Here's why:
+1. Petabyte-scale data transfer - snowball edge devices can transfer up to 100TB of data per device, making them ideal for the company's 70TB dataset. This reduces the number of transfers needed.
+2. Optimized for large files - snowball edge is designed for large file transfers, including files up to 500GB in size. This ensures that the company can efficiently transfer its video files without fragmentation.
+3. Network bandwidth minimization - snowball edge minimizes network bandwidth usage by physically shipping the data to aws. This is crucial for the company's requirement of using the least possible network bandwidth.
+4. Speed - shipping the data on a snowball edge is much faster than transferring 70TB over the internet, especially for a company with limited bandwidth. This meets the company's need for a fast migration.
+5. Security - snowball edge devices are tamper-resistant and encrypt data at rest and in transit, ensuring the security of the video files during transfer.
+
+How it works:
+1. Order - the company orders a snowball edge devices from aws, specifying the desired storage capacity.
+2. Receive - aws ships the devices to the company's premises.
+3. Transfer - the company connects the device to their network and uses the snowball client to transfer the video files to the device.
+4. Ship back - the company ships the device back to aws using the provided shipping label.
+5. Upload - aws uploads the data from the device to the company's s3 bucket.
+
+Important considerations:
+1. Data transfer costs - while snowball edge is cost-effective for large data transfers, be aware of the costs associated with the service.
+2. Data integrity - verify the data transfer and ensure that all video files are successfully migrated to s3.
+3. Data access - plan how users will access the video files in s3 after the migration is complete.
 
 
 
