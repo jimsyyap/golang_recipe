@@ -24,6 +24,11 @@ type Celeritas struct {
     config config
 }
 
+type config struct {
+    port string
+    renderer string
+}
+
 func (c *Celeritas) New(rootPath string) error {
     pathCofig := initPaths{
         rootPath: rootPath,
@@ -61,6 +66,13 @@ func (c *Celeritas) New(rootPath string) error {
     c.ErrorLog = errorLog
     c.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
     c.Version = version
+    c.RootPath = rootPath
+    c.Routs = c.routes().(*chi.Mux)
+
+    c.config = config {
+        port: os.Getenv("PORT"),
+        renderer: os.Getenv("RENDERER"),
+    }
 
     return nil
 }
@@ -77,6 +89,21 @@ func (c *Celeritas) Init(p initPaths) error {
     return nil
 }
 
+func (c *Celeritas) ListenAndServe() {
+    srv := &http.Server {
+        Addr: fmt.Sprintf(":%s", os.Getenv("PORT")),
+        Handler: c.Routes,
+        ErrorLog: c.ErrorLog,
+        ReadTimeout: 30 * time.Second,
+        WriteTimeout: 600 * time.Second,
+        IdleTimeout: 30 * time.Second,
+    }
+
+    c.InfoLog.Printf("Starting server on port %s", os.Getenv("PORT"))
+    err := srv.ListenAndServe()
+    c.ErrorLog.Fatal(err)
+}
+
 func (c *Celeritas) checkDotEnv(path string) error {
     err := c.CreateFileIfNotExists(fmt.Sprintf("%s/.env", path))
     if err != nil {
@@ -91,4 +118,6 @@ func (c *Celeritas) startLoggers() (*log.Logger, *log.Logger) {
 
     infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
     errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+    return infoLog, ErrorLog
 }
