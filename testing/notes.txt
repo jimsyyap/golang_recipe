@@ -1,0 +1,6 @@
+. There is a need to supplement my learning
+. Golang
+. Machine learning
+. Together golang ML
+. Where to find book
+. What i'll do today?

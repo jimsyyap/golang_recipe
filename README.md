@@ -8,8 +8,9 @@ pkg folder is 224MB as of 09june2024.
 
 ## TODO
 
-. Direct response this for seek
-. Laravel to go: build projects
+- focus on malware data science using golang packages
+- Direct response this for seek
+- Laravel to go: build projects
 
 ### notes
 rand.Seed deprecated? Do...

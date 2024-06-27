@@ -1,7 +1,8 @@
 # 7
 
+A company has an application that ingests incoming messages. Dozens of other applications and microservices then quickly consume these messages. The number of messages varies drastically increases suddenly to 100,000 each second. The company wants to decouple the solution and increase scalability. Which aws service should a solutions architect recommend to meet these requirements?
 
-
+Answer: Amazon SQS
 
 # 6
 A company uses NFS to store large video files in on-premises network attached storage. Each video file ranges in size from 1MB to 500GB. The total storage is 70TB and is no longer growing. The company decides to migrate the video files to amazon S3. The company must migrate the video files as soon as possible while using the least possible network bandwidth. Which aws solution will meet these requirements?
