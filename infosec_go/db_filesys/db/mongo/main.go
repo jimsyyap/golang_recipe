@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/blackhat-go/bhg/ch-7/db/dbminer"
+	"github.com/jimsyyap/db/dbminer"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )

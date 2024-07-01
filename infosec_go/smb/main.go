@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/blackhat-go/ch-6/smb/smb"
+	"github.com/jimsyyap/smb"
 	"log"
 )
 

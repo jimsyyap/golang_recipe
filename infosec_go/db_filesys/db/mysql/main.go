@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/blackhat-go/bhg/ch-7/db/dbminer"
+	"github.com/jimsyyap/db/dbminer"
 	_ "github.com/go-sql-driver/mysql"
 )
 

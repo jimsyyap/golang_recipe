@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/blackhat-go/bhg/ch-6/smb/smb"
+	"github.com/jimsyyap/smb"
 )
 
 func main() {

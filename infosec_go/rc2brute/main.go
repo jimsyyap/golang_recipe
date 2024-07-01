@@ -10,7 +10,7 @@ import (
 
 	luhn "github.com/joeljunstrom/go-luhn"
 
-	"github.com/blackhat-go/bhg/ch-11/rc2-brute/rc2"
+	"github.com/jimsyyap/rc2-brute/rc2"
 )
 
 var numeric = regexp.MustCompile(`^\d{8}$`)
