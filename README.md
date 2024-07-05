@@ -21,6 +21,13 @@ number := r.Intn(10)
 ...or, if you just need a random number
 rand.Intn(10)
 
+if package import error, test:
+    package main
+    import (
+        "fmt"
+        _ "some_package"
+)
+
 POSTGRESQL
     . Open pgsql $psql
     . List db $\l

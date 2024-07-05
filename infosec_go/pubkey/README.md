@@ -30,3 +30,43 @@ Imagine you have a secret message you want to send to your friend. You decide to
 4. **Decrypt:** Use OAEP padding with the private key to decrypt the message.
 5. **Sign:** Create a PSS signature using the private key and the message's hash.
 6. **Verify:** Use the public key and PSS to verify the signature against the message's hash.
+
+//---
+
+This code is about using encryption and digital signatures to keep messages secret and verify who sent them. Here's a step-by-step breakdown:
+
+1. First, we import the necessary packages for cryptography and other functions we'll need.
+
+2. In the main function, we declare variables we'll use later.
+
+3. We generate a pair of keys: a private key and a public key. Think of these like a special lock and key pair.
+
+4. We create a secret message we want to protect.
+
+5. We use the public key to encrypt (scramble) our message. This is like putting our message in a box that only the private key can open.
+
+6. We print out the encrypted message, which looks like gibberish to anyone who doesn't have the private key.
+
+7. We then use the private key to decrypt (unscramble) the message, turning it back into something readable.
+
+8. We print out the decrypted message to show it worked.
+
+9. Next, we create a digital signature for our message. This is like a special stamp that proves we wrote the message.
+
+10. We print out this signature.
+
+11. Finally, we verify the signature using the public key. This checks if the message really came from us and wasn't changed.
+
+12. If everything works, we print "Signature verified".
+
+The thought process for writing this code might go like this:
+
+1. "I need to keep a message secret. How do I do that? Oh, I can use RSA encryption."
+2. "I'll need to generate keys for this. Let's start by importing the necessary packages."
+3. "Now, I'll generate the key pair and create my secret message."
+4. "Let's encrypt the message and then decrypt it to make sure it works."
+5. "It would also be good to prove this message came from me. I can use a digital signature for that."
+6. "I'll create the signature and then verify it to show how it works."
+7. "At each step, I should print out the results and handle any errors that might occur."
+
+This code demonstrates basic encryption and digital signature concepts, which are fundamental to many security systems.
