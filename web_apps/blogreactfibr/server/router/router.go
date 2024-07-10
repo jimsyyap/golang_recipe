@@ -6,14 +6,17 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-    /*
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.SendString("Hello, World!")
-    })
-    */
-    app.Get("/", controller.BlogList)
-    app.Get("/:id", controller.BlogDetail)
-    app.Post("/", controller.BlogCreate)
-    app.Put("/:id", controller.BlogUpdate)
-    app.Delete("/:id", controller.BlogDelete)
+
+	// list => get
+	// read blog => get (id)
+	// add => post
+	// update => put
+	// delete => delete
+
+	app.Get("/", controller.BlogList)
+	app.Get("/:id", controller.BlogDetail)
+	app.Post("/", controller.BlogCreate)
+	app.Put("/:id", controller.BlogUpdate)
+	app.Delete("/:id", controller.BlogDelete)
+
 }

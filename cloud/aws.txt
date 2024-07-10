@@ -1,3 +1,15 @@
+# 14
+
+a company runs an ecommerce application on amazon ec2 instances behind an application load balancer. The instances run in an amazon ec2 auto scaling group across multiple availability zones. The auto scaling group scales based on cpu utilization metrics. The ecommerce application stores the transaction data in a mysql database that is hosted on a large ec2 instance. The db's performance degrades quickly as application load increases. The application handles more read requests than write transactions. The company wants a solution that will auto scale the db to meet the demand of unpredictable read workloads while maintaining high availability. Which aws solution will meet these requirements?
+
+The best aws solution would be to use amazon aurora with auto-scaling and read replicas. 
+1. Amazon aurora is a mysql-compatible relational database that provides better performance and scalability compared to traditional mysql db's.
+2. Aurora auto-scaling - aurora serverless automatically adjusts the database capacity based on the workload. This ensures that the db can handle unpredictable read workloads without manual intervention.
+3. Read replicas - aurora supports read replicas that can offload read traffic from the primary db instance. This helps to improve read performance and scalability.
+4. High availability - aurora provides high availability with automatic failover and data replication across multiple availability zones. This ensures that the db remains available even if the primary instance fails.
+5. The solution can be implemented without changing the application code, as the application can connect to the aurora cluster endpoint for write operations and the reader endpoint for read operations.
+
+
 # 13
 
 A company performs monthly maintenance on its aws infrastructure. During these maintenance activities, the company needs to rotate the credentials for its amazon rds for mysql databases across multiple regions. Which solutions will meet these requirements with the least operational overhead?

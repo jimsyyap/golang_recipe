@@ -3,6 +3,7 @@ package controller
 import (
     "github.com/gofiber/fiber/v2"
     "github.com/jimsyyap/blog/database"
+    "github.com/jimsyyap/blog/model"
 )
 
 func BlogList (c *fiber.Ctx) error {
@@ -48,3 +49,21 @@ func BlogDelete(c *fiber.Ctx) error {
     c.Status(200)
     return c.JSON(context)
 }
+
+
+func BlogDetail(c *fiber.Ctx) error {
+    context := fiber.Map{
+        "statusText": "Blog Detail",
+        "msg": "Blog Detail",
+    }
+    c.Status(200)
+    return c.JSON(context)
+}
+
+/*
+func BlogDetail(c *fiber.Ctx) error {
+	// Implementation for getting a specific blog
+	id := c.Params("id")
+	return c.SendString("Blog detail for ID: " + id)
+}
+*/

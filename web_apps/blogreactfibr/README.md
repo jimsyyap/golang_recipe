@@ -4,6 +4,14 @@
 
 - dashboard
 
+### change/update
+
+- 2024-07-10 16:18 go run server/server.go is joy
+localhost:3000 prints
+```
+{"blog_records":[],"msg":"Blog List","statusText":"Blog List"}
+```
+
 POSTGRESQL
     . Open pgsql $psql
     . List db $\l
@@ -12,8 +20,8 @@ POSTGRESQL
     . List tables $\dt
     . Describe tables $\d table_name
     . To see what's inside of table: $> SELECT * FROM table_name;
+    . Create file ~/.psqlrc > \pset pager off > save > joy?
+    . To drop database > $psql > DROP DATABASE <dbname>;
 
-    Postgres control psql display rows with (END)
-        \pset pager off [source https://t.ly/N6MqP]
-        . Create file ~/.psqlrc > \pset pager off > save > joy?
-    To drop database > $psql > DROP DATABASE <dbname>;
+Postgres control psql display rows with (END)
+    \pset pager off [source https://t.ly/N6MqP]
