@@ -3,6 +3,7 @@
 ## TODO:
 
 - dashboard
+- on gemini or claude, ask "acting as an experienced golang developer trainer, you will help me to learn and build a portfolio of golang projects that i can showcase when applying for work. what questions do you have for me before we begin?"
 
 ### change/update
 
