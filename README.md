@@ -70,3 +70,86 @@ simplicity is a great virtue, but it requires hard work to achieve it and educat
     . Applications that process data from relational databases, NoSQL databases, or other popular data storage systems
     . Compilers and interpreters for your own programming languages
     . Database systems such as CockroachDB and key/value stores such as etcd
+
+Structs vs Interfaces in golang
+
+Structs:
+1. Define data: Structs are used to define a collection of fields (data).
+2. Concrete implementation: They provide a concrete implementation of data structures.
+3. Have state: Structs can hold actual values.
+
+Example of a struct:
+
+```go
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+```
+
+Interfaces:
+1. Define behavior: Interfaces define a set of method signatures (behavior).
+2. Abstract definition: They provide an abstract definition of what something can do.
+3. No state: Interfaces don't hold values themselves.
+
+Example of an interface:
+
+```go
+type Shape interface {
+    Area() float64
+    Perimeter() float64
+}
+```
+
+Key differences:
+
+1. Purpose:
+   - Structs are for grouping related data.
+   - Interfaces are for defining common behavior.
+
+2. Implementation:
+   - You directly create and use struct instances.
+   - You implement interfaces implicitly by defining methods on types.
+
+3. Flexibility:
+   - Structs are rigid; once defined, their fields are fixed.
+   - Interfaces are flexible; any type that implements the required methods satisfies the interface.
+
+4. Usage:
+   - Use structs when you need to represent an object with properties.
+   - Use interfaces when you want to define a contract for behavior that multiple types can fulfill.
+
+Here's a simple example showing how they work together:
+
+```go
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+func (r Rectangle) Perimeter() float64 {
+    return 2*r.Width + 2*r.Height
+}
+
+type Shape interface {
+    Area() float64
+    Perimeter() float64
+}
+
+func PrintShapeInfo(s Shape) {
+    fmt.Printf("Area: %f, Perimeter: %f\n", s.Area(), s.Perimeter())
+}
+
+func main() {
+    rect := Rectangle{Width: 5, Height: 3}
+    PrintShapeInfo(rect)
+}
+```
+
+In this example, `Rectangle` is a struct that holds data, while `Shape` is an interface that defines behavior. The `Rectangle` type implements the `Shape` interface by providing `Area()` and `Perimeter()` methods.
+
+This combination allows for powerful, flexible, and reusable code in Go. Would you like me to elaborate on any specific aspect of this comparison?
