@@ -1,23 +1,23 @@
 package main
 
 import (
-    "flag"
-    "log"
-    "strconv"
-    "github.com/jimsyyap/procInj/utils"
-    "github.com/jimsyyap/procInj/winsys"
+	"flag"
+	"github.com/jimsyyap/procInj/utils"
+	"github.com/jimsyyap/procInj/winsys"
+	"log"
+	"strconv"
 )
 
 var opts struct {
-    pid string
-    dll string
-    priv string
+	pid  string
+	dll  string
+	priv string
 }
 
 var inj winsys.Inject
 
 func init() {
-    flag.StringVar(&opts.pid, "pid", "0", "the pid number")
+	flag.StringVar(&opts.pid, "pid", "0", "the pid number")
 	flag.StringVar(&opts.dll, "dll", "", "the dll file")
 	flag.StringVar(&opts.priv, "privilege", "", "the token privilege to search")
 	flag.Parse()
@@ -38,13 +38,13 @@ func init() {
 }
 
 func main() {
-    if opts.priv != "" {
-        err := winsys.SetTokenPrivilege(&inj)
-        if err != nil {
-            log.Fatal(err)
-        }
-    }
-    err := winsys.OpenProcessHandle(&inj)
+	if opts.priv != "" {
+		err := winsys.SetTokenPrivilege(&inj)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	err := winsys.OpenProcessHandle(&inj)
 	if err != nil {
 		log.Fatal(err)
 	}
