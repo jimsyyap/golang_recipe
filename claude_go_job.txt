@@ -350,3 +350,21 @@ Given your interest in both backend development and DevOps, let's create a portf
 Remember, this is a suggested approach, and you can customize it based on your interests and learning pace. With 30 hours a week dedicated to learning and building, you can create a compelling Golang portfolio within a reasonable timeframe.
 
 Feel free to ask any questions you have about specific technologies or project ideas as we proceed!
+
+//--
+
+What you'll do:
+. Lead and mentor a high-performing team: Guide and empower your team to deliver exceptional results, fostering a collaborative and supportive environment.
+. Drive technical excellence: Act as the Software Design Authority, ensuring adherence to high-quality standards and best practices.
+. Build and enhance AI solutions: Take ownership of projects, develop and improve AI solutions for internal shared services and optimise existing platforms.
+. Collaborate with stakeholders: Identify opportunities for improvement and work with various stakeholders to implement impactful solutions.
+. Embrace cutting-edge technologies: Partner with AWS and other partners to explore and implement new solutions and best practices.
+
+What you'll bring:
+. Deep Golang experience: Minimum 5 years of experience building scalable, high-performance systems using Golang.
+. Proven leadership: 2+ years of experience leading technical teams, inspiring and motivating your team members.
+. Passion for quality: Strong commitment to producing maintainable code, applying programming patterns within a microservice architecture.
+. Data handling prowess: Experience working with systems that handle large amounts of data and building scalable solutions.
+. Problem-solving champion: Thrive on tackling complex technical challenges and finding creative solutions.
+. Continuous learner: Stay up-to-date with the latest advancements in back-end engineering and actively seek opportunities for professional growth.
+. Effective communicator: Strong communication skills, able to collaborate effectively within a team and adapt to dynamic environments.
