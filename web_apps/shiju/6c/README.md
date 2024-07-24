@@ -116,3 +116,56 @@ The main difference between this code and the previous one is that we're using a
 
 This code creates a simple web server that displays a welcome message when someone visits the main page, just like the previous version. The key difference is that it uses the Gorilla Mux router, which provides more flexibility for defining routes in larger, more complex web applications.
 
+// flowcontrol.gorilla
+
+**Imagine a Bakery with Checkpoints**
+
+Think of this code like a bakery with a couple of special checkpoints before you reach the counter:
+
+1. **Checkpoint 1 (middlewareFirst):** This is like a friendly greeter at the door. They say "Hello!" when you enter and "Goodbye!" when you leave.
+2. **Checkpoint 2 (middlewareSecond):** This is like a security guard. They check if you're trying to get to the secret "message" room. If so, they ask for a password ("pass123"). If you have it, you can go in; otherwise, they politely ask you to leave.
+
+**The Delicious Treats (Handlers)**
+
+Behind these checkpoints are two main treats the bakery offers:
+
+1. **The "Welcome" Cookie (index):** This is the default treat you get if you don't ask for anything special.
+2. **The "Secret Message" Pastry (message):** This is a special treat you can only get if you pass the security guard's password check.
+
+**The Code's Thought Process**
+
+1. **Set up the Menu (mux):** This is like a list of what the bakery offers and where to find each item.
+2. **Hire the Staff (negroni.Classic()):** This is like the bakery's management team. They handle the overall operation.
+3. **Train the Staff (n.Use(...)):** This is where the management tells the greeter and security guard what their jobs are.
+4. **Tell the Staff Where to Work (n.UseHandler(mux)):** This is like assigning the greeter and security guard to specific places in the bakery.
+5. **Open for Business (n.Run(":8080")):** This is like opening the doors and letting customers in.
+
+**Writing the Code (Simplified)**
+
+```go
+// 1. Import tools we need
+import (...)
+
+// 2. Create our bakery items (handlers)
+func index(...) { ... } // "Welcome" cookie
+func message(...) { ... } // "Secret Message" pastry
+
+// 3. Create our checkpoints (middleware)
+func middlewareFirst(...) { ... } // Greeter
+func middlewareSecond(...) { ... } // Security guard
+
+// 4. Set up the menu
+mux := ...
+
+// 5. Hire the staff & assign tasks
+n := ...
+n.Use(...) // Greeter
+n.Use(...) // Security guard
+n.UseHandler(mux) // Tell them where to work
+
+// 6. Open the bakery!
+n.Run(...) 
+```
+
+**Important Note:** This code uses the `negroni` package, which helps manage middleware in Go. It makes things a bit easier than writing all the middleware handling yourself.
+
