@@ -2,7 +2,7 @@
 
 "do one thing well". 
 
-Nothing monolithic code here. Most of the folders have one or two simple concepts about go. Use grep to scan through files and folders for that snippet of code that might help...build complex, not complicated. This repository is updated on a regular basis.
+Nothing monolithic code here. Most of the folders have one or two simple concepts about go. I then use grep to scan through files and folders for that snippet of code that might help...build complex, not complicated. This repository is updated on a regular basis.
 
 pkg folder is 224MB as of 09june2024.
 
