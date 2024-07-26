@@ -169,3 +169,66 @@ n.Run(...)
 
 **Important Note:** This code uses the `negroni` package, which helps manage middleware in Go. It makes things a bit easier than writing all the middleware handling yourself.
 
+// auth.go
+
+**What's happening?**
+
+Imagine you're hosting a secret clubhouse for your friends. This code is like the bouncer at the door:
+
+1. **The Clubhouse (Server):**  This Go program sets up a web server. It's like a virtual building where friends can visit.
+2. **The Secret Password (Authorization):** To enter, your friends need a special password in their invitation ("X-AppToken" header). The code checks if this password matches the right one ("bXlfdG9rZW4=").
+3. **Welcoming the Friend:** If the password is correct, the code figures out who the friend is (in this case, "jim") and lets them in.
+4. **Saying Hello:** Inside the clubhouse, the code greets the friend with a friendly message ("Hello jim").
+
+**The Thought Process: How to Write It**
+
+1. **Libraries:**
+   - **`net/http`:**  Go's built-in tools for building web servers.
+   - **`github.com/gorilla/context`:**  Helps us store information about the visitor (like their name) so we can use it later.
+   - **`github.com/jimsyyap/negroni`:** A middleware library for Go, makes it easier to add functionalities like authorization to the app.
+   - **`log`:** Provides functions to log error messages.
+
+2. **Authorization (`Authorize` function):**
+   - Checks if the "X-AppToken" header exists and matches the secret password ("bXlfdG9rZW4=").
+   - If it matches, stores the username ("jim") using `context.Set` and calls the `next` function to continue processing the request.
+   - If not, it sends an "Unauthorized" error.
+3. **The Clubhouse Index (`index` function):**
+   - Fetches the username from the context using `context.Get`.
+   - Creates a greeting message ("Hello jim").
+4. **Setting up the Server (`main` function):**
+   - Creates a new HTTP server.
+   - Defines a route ("/") that calls the `index` function when someone visits the homepage.
+   - Adds the authorization middleware using `negroni.HandlerFunc` and the mux to handle incoming requests.
+   - Starts the server on port 8080.
+
+**Key Points**
+* **Base64 Encoding:** The token "bXlfdG9rZW4=" is the Base64 encoding of the string "my_token". This is a simple way to obscure the password, although it is not a strong security measure.
+* **Middleware:** Negroni middleware allows you to add functionalities like authorization before the request is handled by the main handler.
+
+// logger.go
+
+This Go code is about making a simple website that can do a few things and tell us what it's doing: 
+
+1. First, we make a special helper. This helper is like a watchful friend who tells us when someone visits our website and how long they stay.
+
+2. We create two main pages for our website:
+   - A welcome page that says "Welcome!"
+   - An "About" page that says "Go Middleware"
+
+3. We set up our website to use our watchful friend (the helper) to keep an eye on these pages.
+
+4. Finally, we tell our website to start working and listen for visitors.
+
+Now, let's think about how we might write this:
+
+1. We'd start by thinking, "What do we want our website to do?" We decide we want a welcome page and an about page.
+
+2. Then we think, "It would be nice to know when people visit." So we create our watchful friend (the logging middleware).
+
+3. We write the code for our pages, making them simple at first.
+
+4. We add our watchful friend to each page, so it can tell us about visits.
+
+5. Finally, we set up the website to run and tell it to start listening for visitors.
+
+This way of building the website is like putting together building blocks. We make each piece (the pages, the watchful friend) separately, then put them all together at the end to make our complete website.
