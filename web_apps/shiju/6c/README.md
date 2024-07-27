@@ -232,3 +232,94 @@ Now, let's think about how we might write this:
 5. Finally, we set up the website to run and tell it to start listening for visitors.
 
 This way of building the website is like putting together building blocks. We make each piece (the pages, the watchful friend) separately, then put them all together at the end to make our complete website.
+
+// middleware/flowcontrol.go
+
+1. Imagine you're building a house (our web server). 
+
+2. First, we need a foundation (the main function):
+   - This is where we set up our house and say where people can enter (like setting up doors).
+   - We decide the house will be at address ":8080" (that's like saying it's on Computer Street, number 8080).
+
+3. Now, we create some rooms in our house (these are our "handlers"):
+   - We have a welcome room (index) where we say "Welcome" to visitors.
+   - We have a message room where we say "HTTP Middleware is awesome".
+
+4. But before people can enter these rooms, we want to set up some security guards (these are our "middlewares"):
+   - We have two guards: middlewareFirst and middlewareSecond.
+   - These guards will check visitors before they enter a room and after they leave.
+
+5. The first guard (middlewareFirst) just announces when someone is entering or leaving.
+
+6. The second guard (middlewareSecond) is a bit stricter:
+   - If someone wants to enter the message room, they need to know a secret password ("pass123").
+   - If they know the password, the guard lets them in. If not, the guard turns them away.
+
+7. Finally, we set up our rooms with the guards:
+   - The welcome room has both guards.
+   - The message room also has both guards.
+
+8. We tell our house (server) to start welcoming visitors.
+
+The thought process for writing this:
+
+1. Start with the basic structure: import necessary packages and create a main function.
+2. Define the simple handlers (index and message) to respond to requests.
+3. Think about what checks or processes you want to happen before and after these handlers run. This is where middleware comes in.
+4. Write the middleware functions. Start with a simple logging middleware (middlewareFirst).
+5. For more complex logic, like authentication, create another middleware (middlewareSecond).
+6. In the main function, set up the routes and apply the middleware to the handlers.
+7. Finally, create and start the server.
+
+This code sets up a simple web server with two routes, protected by two layers of middleware, demonstrating how to implement basic logging and authentication in a Go web application.
+
+// middleware/gorillahandler.go
+
+**What this code does:**
+
+Imagine you're setting up a lemonade stand. You need:
+
+1. **A Sign:** This tells people what you're offering.
+2. **A Menu:** Explains your different lemonade flavors (regular, pink, etc.).
+3. **A Notebook:** To keep track of who buys what.
+
+This Go code does something similar, but for a simple website:
+
+1. **Index (`/`) Page (the Sign):** When someone visits the website, they see a "Welcome!" message.
+2. **About (`/about`) Page (the Menu):**  This page tells visitors the website is made with "Go Middleware."
+3. **favicon.ico (the Icon):** This displays the website's icon in the browser tab.
+4. **Server Log (`server.log`) (the Notebook):** Records who visits the website and what pages they look at.
+5. **Compression:** Makes the website load faster.
+
+**How we build the lemonade stand (aka, the code):**
+
+1. **Get the tools:**
+   - We use a special toolkit called "gorilla/handlers" to help with logging and compression.
+   - We use the built-in `net/http` package to set up our web server.
+
+2. **Make the sign and menu:**
+   - `index` function: Prepares the "Welcome!" message for the main page.
+   - `about` function: Prepares the "Go Middleware" message for the "/about" page.
+   - `iconHandler` function: Prepares the favicon for display in the browser.
+
+3. **Set up the notebook:**
+   - We open (or create if it doesn't exist) a file called "server.log".
+   - This file will be used to write down when people visit our website.
+
+4. **Tell people where to find us:**
+   - We set up the lemonade stand to listen on port 8080 of our computer.  (You usually visit websites using port 80, but we use 8080 here so it doesn't conflict with other things on your computer).
+   - The server starts running, ready for visitors!
+
+**Extra things:**
+
+* **Handlers:** These are like the people who work at the lemonade stand. They take orders (`index` and `about` functions) and also write in the notebook (using `LoggingHandler`).
+* **CompressHandler:** This is like putting the lemonade in smaller cups to make it easier to carry away (making the website data smaller to load faster).
+
+**Why this is useful:**
+
+Even though it's simple, this code shows the basics of how websites work:
+
+* **Serving content:** Showing messages to visitors.
+* **Handling different pages:** Having an index page and an about page.
+* **Logging:** Keeping track of who visits.
+* **Performance:** Making the website load faster. 
